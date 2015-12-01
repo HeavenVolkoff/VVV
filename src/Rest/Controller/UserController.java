@@ -2,13 +2,14 @@ package Rest.Controller;
 
 import Rest.Model.tables.daos.UserDao;
 import Rest.Model.tables.pojos.User;
-import Server.DbFactory;
-import org.hibernate.validator.constraints.Email;
+import Server.Utility.DbFactory;
+import Server.Utility.ValidatorFactory;
 import org.mindrot.jbcrypt.BCrypt;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.ConstraintViolation;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Set;
 
 
 @Path("user")
@@ -18,7 +19,7 @@ public class UserController {
     @Path("get")
     @Produces(MediaType.APPLICATION_JSON)
     public User get(){
-        try(DbFactory.Db db = DbFactory.getInstance().open()){ //Try with resources
+        try(DbFactory.Db db = DbFactory.openConnection()){ //Try with resources
             UserDao userDao = new UserDao(db.getConfiguration());
             return userDao.findById(1);
 
@@ -31,31 +32,30 @@ public class UserController {
 
     @POST
     @Path("create")
-    @Consumes({MediaType.APPLICATION_FORM_URLENCODED})
-    @Produces({MediaType.TEXT_PLAIN})
-    public String create(
-            @NotNull @FormParam("firstName") String firstName,
-            @NotNull @FormParam("lastName") String lastName,
-            @NotNull @FormParam("password") String password,
-            @Email @FormParam("email") String email
-    ) {
-        try(DbFactory.Db db = DbFactory.getInstance().open()){
-            byte[] passwordHash = BCrypt.hashpw(password, BCrypt.gensalt(12)).getBytes();
-            UserDao userDao = new UserDao(db.getConfiguration());
-            User user = new User();
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setEmail(email);
-            user.setPasswordHash(passwordHash);
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public String create(User user){
+        try(
+                DbFactory.Db db = DbFactory.openConnection();
+                ValidatorFactory.Validator validator = ValidatorFactory.getValidator())
+        {
+            Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
 
+            if(constraintViolations.size() != 0){
+                System.out.println("Erro Verificacao");
+                return constraintViolations.iterator().next().getMessage();
+            }
+
+            UserDao userDao = new UserDao(db.getConfiguration());
             userDao.insert(user);
 
             return "ok";
 
         } catch (Exception e) {
             e.printStackTrace();
-
-            return "not ok";
+            //TODO: 500 - Server Error
         }
+
+        return "not ok";
     }
 }
