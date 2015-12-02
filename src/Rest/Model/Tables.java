@@ -25,17 +25,17 @@ import javax.annotation.Generated;
 public class Tables {
 
 	/**
-	 * User Address
+	 * The table vvv.address
 	 */
 	public static final Address ADDRESS = Rest.Model.tables.Address.ADDRESS;
 
 	/**
-	 * User Credit Card
+	 * The table vvv.credit_card
 	 */
 	public static final CreditCard CREDIT_CARD = Rest.Model.tables.CreditCard.CREDIT_CARD;
 
 	/**
-	 * Website User
+	 * The table vvv.user
 	 */
 	public static final User USER = Rest.Model.tables.User.USER;
 }

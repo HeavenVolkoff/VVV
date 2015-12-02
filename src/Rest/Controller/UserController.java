@@ -4,16 +4,21 @@ import Rest.Model.tables.daos.UserDao;
 import Rest.Model.tables.pojos.User;
 import Server.Utility.DbFactory;
 import Server.Utility.ValidatorFactory;
-import org.mindrot.jbcrypt.BCrypt;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import org.jooq.tools.json.JSONObject;
 
 import javax.validation.ConstraintViolation;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 
 
 @Path("user")
 public class UserController {
+
+    private static final JsonNodeFactory jsonFactory = JsonNodeFactory.instance;
 
     @GET
     @Path("get")
@@ -34,28 +39,31 @@ public class UserController {
     @Path("create")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public String create(User user){
-        try(
-                DbFactory.Db db = DbFactory.openConnection();
-                ValidatorFactory.Validator validator = ValidatorFactory.getValidator())
-        {
-            Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
+    public JSONObject create(User user){
+        JSONObject obj = new JSONObject();
+
+        try(DbFactory.Db db = DbFactory.openConnection()){ //Try with resources
+            Set<ConstraintViolation<User>> constraintViolations = ValidatorFactory.getValidator().validate(user);
 
             if(constraintViolations.size() != 0){
-                System.out.println("Erro Verificacao");
-                return constraintViolations.iterator().next().getMessage();
+                obj.put("successful", false);
+                obj.put("error", constraintViolations.iterator().next().getMessage());
+
+            }else{
+                user.setCreatedAt(new Timestamp((new Date()).getTime()));
+                UserDao userDao = new UserDao(db.getConfiguration());
+                userDao.insert(user);
+
+                obj.put("successful", true);
             }
-
-            UserDao userDao = new UserDao(db.getConfiguration());
-            userDao.insert(user);
-
-            return "ok";
 
         } catch (Exception e) {
             e.printStackTrace();
-            //TODO: 500 - Server Error
+
+            obj.put("successful", false);
+            obj.put("error", "SERVER_ERROR");
         }
 
-        return "not ok";
+        return obj;
     }
 }

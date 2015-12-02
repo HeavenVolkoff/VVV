@@ -19,6 +19,5 @@ public class LifeCycleManagement implements ServletContextListener {
         System.out.println("Finished...");
 
         DbFactory.closeAllConnections();
-        ValidatorFactory.closeAllConnections();
     }
 }
