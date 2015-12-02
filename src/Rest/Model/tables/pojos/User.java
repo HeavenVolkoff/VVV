@@ -40,19 +40,19 @@ public class User implements Serializable {
 	@JsonIgnore
 	private Integer   id;
 
-	@NotNull
-	@Size(max = 255)
+	@NotNull(message = "NOT_NULL")
+	@Size(max = 255, message = "TOO_LONG")
 	private String    firstName;
 
-	@NotNull
-	@Size(max = 255)
+	@NotNull(message = "NOT_NULL")
+	@Size(max = 255, message = "TOO_LONG")
 	private String    lastName;
 
-	@Email
+	@Email(message = "INVALID_EMAIL")
 	private String    email;
 
-	@NotNull
-	@Size(min = 6)
+	@NotNull(message = "NOT_NULL")
+	@Size(min = 6, message = "TOO_SHORT")
 	private String password;
 
 	@JsonIgnore
@@ -72,7 +72,7 @@ public class User implements Serializable {
 		this.lastName = value.lastName;
 		this.email = value.email;
 		this.password = value.password;
-		this.passwordHash = BCrypt.hashpw(value.password, BCrypt.gensalt(12)).getBytes();
+		this.passwordHash = value.passwordHash;
 		this.createdAt = value.createdAt;
 		this.updatedAt = value.updatedAt;
 	}
@@ -85,6 +85,25 @@ public class User implements Serializable {
 		byte[]    passwordHash,
 		Timestamp createdAt,
 		Timestamp updatedAt
+	) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = null;
+		this.passwordHash = passwordHash;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
+
+	public User(
+			Integer   id,
+			String    firstName,
+			String    lastName,
+			String    email,
+			String    password,
+			Timestamp createdAt,
+			Timestamp updatedAt
 	) {
 		this.id = id;
 		this.firstName = firstName;
@@ -136,6 +155,10 @@ public class User implements Serializable {
 	@Column(name = "password_hash", nullable = false, length = 60)
 	public byte[] getPasswordHash() {
 		return this.passwordHash;
+	}
+
+	public void setPasswordHash(byte[] passwordHash) {
+		this.passwordHash = passwordHash;
 	}
 
 	public void setPassword(String password) {
