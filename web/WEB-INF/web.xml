@@ -39,6 +39,6 @@
     </servlet-mapping>
 
     <listener>
-        <listener-class>Server.LifeCycleManagement</listener-class>
+        <listener-class>Server.Listener.LifeCycleManagement</listener-class>
     </listener>
 </web-app>

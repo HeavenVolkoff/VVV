@@ -5,7 +5,7 @@ import Rest.Model.tables.daos.UserDao;
 import Rest.Model.tables.pojos.Oauth;
 import Rest.Model.tables.pojos.User;
 import Server.ErrorHandling.AppException;
-import Server.ResponseMessage;
+import Server.Utility.ResponseMessage;
 import Server.Utility.DbFactory;
 import Server.Utility.FactoryException;
 import Server.Utility.ValidatorFactory;

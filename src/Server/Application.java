@@ -6,14 +6,14 @@ import Server.ErrorHandling.AppExceptionMapper;
 import Server.ErrorHandling.GenericExceptionMapper;
 import Server.ErrorHandling.JsonMappingExceptionMapper;
 import Server.ErrorHandling.NotFoundExceptionMapper;
+import Server.Filter.CsrfCustomProtectionFilter;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.server.filter.CsrfProtectionFilter;
 
 
 public class Application extends ResourceConfig {
     public Application() {// Resources.
         super(
-                CsrfProtectionFilter.class,
+                CsrfCustomProtectionFilter.class,
                 UserController.class,
                 GenericExceptionMapper.class,
                 JsonMappingExceptionMapper.class,

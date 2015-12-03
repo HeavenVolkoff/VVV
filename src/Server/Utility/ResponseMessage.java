@@ -1,4 +1,4 @@
-package Server;
+package Server.Utility;
 
 
 public class ResponseMessage {
@@ -6,13 +6,6 @@ public class ResponseMessage {
     private Integer status;
     private String code;
     private Object data;
-
-    public ResponseMessage(){
-        this.type = "MESSAGE";
-        this.status = 200;
-        this.code = "PING";
-        this.data = null;
-    }
 
     public ResponseMessage(String code, Object data) {
         this.type = "MESSAGE";
