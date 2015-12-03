@@ -36,7 +36,7 @@ public class CsrfCustomProtectionFilter implements ContainerRequestFilter {
         String CsrfKey = rc.getHeaders().getFirst(HEADER_NAME);
 
         try {
-            if(METHODS_TO_IGNORE.contains(rc.getMethod()) || CsrfKey == null || !BCrypt.checkpw("CSRF_KEY_VVV_SYSTEM_176907663", CsrfKey)){
+            if(!METHODS_TO_IGNORE.contains(rc.getMethod()) && (CsrfKey == null || !BCrypt.checkpw("CSRF_KEY_VVV_SYSTEM_176907663", CsrfKey))){
                 throw new BadRequestException();
             }
         }catch (Exception e){
