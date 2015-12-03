@@ -6,9 +6,11 @@ package Rest.Model;
 
 import Rest.Model.tables.Address;
 import Rest.Model.tables.CreditCard;
+import Rest.Model.tables.Oauth;
 import Rest.Model.tables.User;
 import Rest.Model.tables.records.AddressRecord;
 import Rest.Model.tables.records.CreditCardRecord;
+import Rest.Model.tables.records.OauthRecord;
 import Rest.Model.tables.records.UserRecord;
 
 import javax.annotation.Generated;
@@ -47,6 +49,7 @@ public class Keys {
 	public static final UniqueKey<AddressRecord> KEY_ADDRESS_PRIMARY = UniqueKeys0.KEY_ADDRESS_PRIMARY;
 	public static final UniqueKey<AddressRecord> KEY_ADDRESS_USER_ID_UNIQUE = UniqueKeys0.KEY_ADDRESS_USER_ID_UNIQUE;
 	public static final UniqueKey<CreditCardRecord> KEY_CREDIT_CARD_PRIMARY = UniqueKeys0.KEY_CREDIT_CARD_PRIMARY;
+	public static final UniqueKey<OauthRecord> KEY_OAUTH_PRIMARY = UniqueKeys0.KEY_OAUTH_PRIMARY;
 	public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = UniqueKeys0.KEY_USER_PRIMARY;
 	public static final UniqueKey<UserRecord> KEY_USER_EMAIL_UNIQUE = UniqueKeys0.KEY_USER_EMAIL_UNIQUE;
 
@@ -57,6 +60,7 @@ public class Keys {
 	public static final ForeignKey<AddressRecord, UserRecord> FK_ADDRESS_USER = ForeignKeys0.FK_ADDRESS_USER;
 	public static final ForeignKey<CreditCardRecord, UserRecord> FK_CREDITCARD_USER1 = ForeignKeys0.FK_CREDITCARD_USER1;
 	public static final ForeignKey<CreditCardRecord, AddressRecord> FK_CREDIT_CARD_ADDRESS1 = ForeignKeys0.FK_CREDIT_CARD_ADDRESS1;
+	public static final ForeignKey<OauthRecord, UserRecord> FK_OAUTH_USER1 = ForeignKeys0.FK_OAUTH_USER1;
 
 	// -------------------------------------------------------------------------
 	// [#1459] distribute members to avoid static initialisers > 64kb
@@ -70,7 +74,8 @@ public class Keys {
 	private static class UniqueKeys0 extends AbstractKeys {
 		public static final UniqueKey<AddressRecord> KEY_ADDRESS_PRIMARY = createUniqueKey(Address.ADDRESS, Address.ADDRESS.ID);
 		public static final UniqueKey<AddressRecord> KEY_ADDRESS_USER_ID_UNIQUE = createUniqueKey(Address.ADDRESS, Address.ADDRESS.USER_ID);
-		public static final UniqueKey<CreditCardRecord> KEY_CREDIT_CARD_PRIMARY = createUniqueKey(CreditCard.CREDIT_CARD, CreditCard.CREDIT_CARD.USER_ID, CreditCard.CREDIT_CARD.ADDRESS_ID);
+		public static final UniqueKey<CreditCardRecord> KEY_CREDIT_CARD_PRIMARY = createUniqueKey(CreditCard.CREDIT_CARD, CreditCard.CREDIT_CARD.USER_ID);
+		public static final UniqueKey<OauthRecord> KEY_OAUTH_PRIMARY = createUniqueKey(Oauth.OAUTH, Oauth.OAUTH.USER_ID);
 		public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = createUniqueKey(User.USER, User.USER.ID);
 		public static final UniqueKey<UserRecord> KEY_USER_EMAIL_UNIQUE = createUniqueKey(User.USER, User.USER.EMAIL);
 	}
@@ -79,5 +84,6 @@ public class Keys {
 		public static final ForeignKey<AddressRecord, UserRecord> FK_ADDRESS_USER = createForeignKey(Rest.Model.Keys.KEY_USER_PRIMARY, Address.ADDRESS, Address.ADDRESS.USER_ID);
 		public static final ForeignKey<CreditCardRecord, UserRecord> FK_CREDITCARD_USER1 = createForeignKey(Rest.Model.Keys.KEY_USER_PRIMARY, CreditCard.CREDIT_CARD, CreditCard.CREDIT_CARD.USER_ID);
 		public static final ForeignKey<CreditCardRecord, AddressRecord> FK_CREDIT_CARD_ADDRESS1 = createForeignKey(Rest.Model.Keys.KEY_ADDRESS_PRIMARY, CreditCard.CREDIT_CARD, CreditCard.CREDIT_CARD.ADDRESS_ID);
+		public static final ForeignKey<OauthRecord, UserRecord> FK_OAUTH_USER1 = createForeignKey(Rest.Model.Keys.KEY_USER_PRIMARY, Oauth.OAUTH, Oauth.OAUTH.USER_ID);
 	}
 }

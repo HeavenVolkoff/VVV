@@ -113,4 +113,11 @@ public class UserDao extends DAOImpl<UserRecord, Rest.Model.tables.pojos.User, I
 	public List<Rest.Model.tables.pojos.User> fetchByUpdatedAt(Timestamp... values) {
 		return fetch(User.USER.UPDATED_AT, values);
 	}
+
+	/**
+	 * Fetch records that have <code>type IN (values)</code>
+	 */
+	public List<Rest.Model.tables.pojos.User> fetchByType(Byte... values) {
+		return fetch(User.USER.TYPE, values);
+	}
 }

@@ -5,8 +5,9 @@ import Server.Utility.ValidatorFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.ws.rs.ext.Provider;
 
-
+@Provider
 public class LifeCycleManagement implements ServletContextListener {
 
     @Override

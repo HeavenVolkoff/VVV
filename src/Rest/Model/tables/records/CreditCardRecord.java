@@ -11,11 +11,11 @@ import java.sql.Date;
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import org.jooq.Field;
-import org.jooq.Record2;
+import org.jooq.Record1;
 import org.jooq.Record5;
 import org.jooq.Row5;
 import org.jooq.impl.UpdatableRecordImpl;
@@ -33,12 +33,10 @@ import org.jooq.impl.UpdatableRecordImpl;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
-@Table(name = "credit_card", schema = "vvv", uniqueConstraints = {
-	@UniqueConstraint(columnNames = {"user_id", "address_id"})
-})
+@Table(name = "credit_card", schema = "vvv")
 public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> implements Record5<Integer, Integer, String, Date, Integer> {
 
-	private static final long serialVersionUID = -1571630517;
+	private static final long serialVersionUID = -1423354458;
 
 	/**
 	 * Setter for <code>vvv.credit_card.user_id</code>.
@@ -50,7 +48,8 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	/**
 	 * Getter for <code>vvv.credit_card.user_id</code>.
 	 */
-	@Column(name = "user_id", nullable = false, precision = 10)
+	@Id
+	@Column(name = "user_id", unique = true, nullable = false, precision = 10)
 	public Integer getUserId() {
 		return (Integer) getValue(0);
 	}
@@ -110,7 +109,7 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	/**
 	 * Getter for <code>vvv.credit_card.address_id</code>.
 	 */
-	@Column(name = "address_id", nullable = false, precision = 10)
+	@Column(name = "address_id", precision = 10)
 	public Integer getAddressId() {
 		return (Integer) getValue(4);
 	}
@@ -123,8 +122,8 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Record2<Integer, Integer> key() {
-		return (Record2) super.key();
+	public Record1<Integer> key() {
+		return (Record1) super.key();
 	}
 
 	// -------------------------------------------------------------------------

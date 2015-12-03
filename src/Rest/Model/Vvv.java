@@ -6,6 +6,7 @@ package Rest.Model;
 
 import Rest.Model.tables.Address;
 import Rest.Model.tables.CreditCard;
+import Rest.Model.tables.Oauth;
 import Rest.Model.tables.User;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vvv extends SchemaImpl {
 
-	private static final long serialVersionUID = 938796493;
+	private static final long serialVersionUID = -1317090463;
 
 	/**
 	 * The reference instance of <code>vvv</code>
@@ -56,6 +57,7 @@ public class Vvv extends SchemaImpl {
 		return Arrays.<Table<?>>asList(
 			Address.ADDRESS,
 			CreditCard.CREDIT_CARD,
+			Oauth.OAUTH,
 			User.USER);
 	}
 }

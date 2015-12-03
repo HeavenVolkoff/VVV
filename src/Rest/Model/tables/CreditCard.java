@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class CreditCard extends TableImpl<CreditCardRecord> {
 
-	private static final long serialVersionUID = 724622647;
+	private static final long serialVersionUID = 1667980022;
 
 	/**
 	 * The reference instance of <code>vvv.credit_card</code>
@@ -73,7 +73,7 @@ public class CreditCard extends TableImpl<CreditCardRecord> {
 	/**
 	 * The column <code>vvv.credit_card.address_id</code>.
 	 */
-	public final TableField<CreditCardRecord, Integer> ADDRESS_ID = createField("address_id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+	public final TableField<CreditCardRecord, Integer> ADDRESS_ID = createField("address_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * Create a <code>vvv.credit_card</code> table reference

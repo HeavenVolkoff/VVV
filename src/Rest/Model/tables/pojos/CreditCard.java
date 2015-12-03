@@ -10,8 +10,8 @@ import java.sql.Date;
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 
 /**
@@ -26,12 +26,10 @@ import javax.persistence.UniqueConstraint;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
-@Table(name = "credit_card", schema = "vvv", uniqueConstraints = {
-	@UniqueConstraint(columnNames = {"user_id", "address_id"})
-})
+@Table(name = "credit_card", schema = "vvv")
 public class CreditCard implements Serializable {
 
-	private static final long serialVersionUID = -979675147;
+	private static final long serialVersionUID = 1117079055;
 
 	private Integer userId;
 	private Integer number;
@@ -63,7 +61,8 @@ public class CreditCard implements Serializable {
 		this.addressId = addressId;
 	}
 
-	@Column(name = "user_id", nullable = false, precision = 10)
+	@Id
+	@Column(name = "user_id", unique = true, nullable = false, precision = 10)
 	public Integer getUserId() {
 		return this.userId;
 	}
@@ -99,7 +98,7 @@ public class CreditCard implements Serializable {
 		this.expire = expire;
 	}
 
-	@Column(name = "address_id", nullable = false, precision = 10)
+	@Column(name = "address_id", precision = 10)
 	public Integer getAddressId() {
 		return this.addressId;
 	}

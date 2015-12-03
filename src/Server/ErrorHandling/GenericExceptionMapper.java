@@ -16,12 +16,8 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
 
         ErrorMessage errorMessage = new ErrorMessage();
         setHttpStatus(ex, errorMessage);
-        errorMessage.setCode(-1);
-        errorMessage.setMessage(ex.getMessage());
-        StringWriter errorStackTrace = new StringWriter();
-        ex.printStackTrace(new PrintWriter(errorStackTrace));
-        errorMessage.setDeveloperMessage(errorStackTrace.toString());
-        errorMessage.setLink("");
+        errorMessage.setDeveloperMessage(ex.getMessage());
+        errorMessage.setData(ex.getStackTrace());
 
         return Response.status(errorMessage.getStatus())
                 .entity(errorMessage)
@@ -32,8 +28,11 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
     private void setHttpStatus(Throwable ex, ErrorMessage errorMessage) {
         if(ex instanceof WebApplicationException) {
             errorMessage.setStatus(((WebApplicationException)ex).getResponse().getStatus());
+            errorMessage.setCode("ERROR_" + errorMessage.getStatus());
+
         } else {
             errorMessage.setStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()); //defaults to internal server error 500
+            errorMessage.setCode("SERVER_ERROR");
         }
     }
 }

@@ -31,7 +31,7 @@ public final class DbFactory {
         }
 
         @Override
-        public void close() throws Exception{
+        public void close() throws SQLException {
             if(!instance.closing.get()){
                 Connection connection = instance.busyConnections.remove(this.id);
 

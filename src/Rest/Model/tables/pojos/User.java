@@ -35,7 +35,7 @@ import javax.validation.constraints.Size;
 @Table(name = "user", schema = "vvv")
 public class User implements Serializable {
 
-	private static final long serialVersionUID = 537533178;
+	private static final long serialVersionUID = 1919805592;
 
 	@JsonIgnore
 	private Integer   id;
@@ -64,6 +64,9 @@ public class User implements Serializable {
 	@JsonIgnore
 	private Timestamp updatedAt;
 
+	@JsonIgnore
+	private Byte      type;
+
 	public User() {}
 
 	public User(User value) {
@@ -72,9 +75,11 @@ public class User implements Serializable {
 		this.lastName = value.lastName;
 		this.email = value.email;
 		this.password = value.password;
-		this.passwordHash = value.passwordHash;
+		this.passwordHash = (value.passwordHash == null || value.passwordHash.length == 0) && value.password.length() > 0?
+								BCrypt.hashpw(value.password, BCrypt.gensalt(12)).getBytes() : value.passwordHash;
 		this.createdAt = value.createdAt;
 		this.updatedAt = value.updatedAt;
+		this.type = value.type;
 	}
 
 	public User(
@@ -84,7 +89,8 @@ public class User implements Serializable {
 		String    email,
 		byte[]    passwordHash,
 		Timestamp createdAt,
-		Timestamp updatedAt
+		Timestamp updatedAt,
+		Byte      type
 	) {
 		this.id = id;
 		this.firstName = firstName;
@@ -94,6 +100,7 @@ public class User implements Serializable {
 		this.passwordHash = passwordHash;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.type = type;
 	}
 
 	public User(
@@ -103,7 +110,8 @@ public class User implements Serializable {
 			String    email,
 			String    password,
 			Timestamp createdAt,
-			Timestamp updatedAt
+			Timestamp updatedAt,
+			Byte      type
 	) {
 		this.id = id;
 		this.firstName = firstName;
@@ -113,6 +121,7 @@ public class User implements Serializable {
 		this.passwordHash = BCrypt.hashpw(password, BCrypt.gensalt(12)).getBytes();
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.type = type;
 	}
 
 	@Id
@@ -185,6 +194,15 @@ public class User implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
+	@Column(name = "type", nullable = false, precision = 3)
+	public Byte getType() {
+		return this.type;
+	}
+
+	public void setType(Byte type) {
+		this.type = type;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("User (");
@@ -193,8 +211,10 @@ public class User implements Serializable {
 		sb.append(", ").append(firstName);
 		sb.append(", ").append(lastName);
 		sb.append(", ").append(email);
+		sb.append(", ").append("[binary...]");
 		sb.append(", ").append(createdAt);
 		sb.append(", ").append(updatedAt);
+		sb.append(", ").append(type);
 
 		sb.append(")");
 		return sb.toString();

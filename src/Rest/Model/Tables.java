@@ -6,6 +6,7 @@ package Rest.Model;
 
 import Rest.Model.tables.Address;
 import Rest.Model.tables.CreditCard;
+import Rest.Model.tables.Oauth;
 import Rest.Model.tables.User;
 
 import javax.annotation.Generated;
@@ -33,6 +34,11 @@ public class Tables {
 	 * The table vvv.credit_card
 	 */
 	public static final CreditCard CREDIT_CARD = Rest.Model.tables.CreditCard.CREDIT_CARD;
+
+	/**
+	 * The table vvv.oAuth
+	 */
+	public static final Oauth OAUTH = Rest.Model.tables.Oauth.OAUTH;
 
 	/**
 	 * The table vvv.user

@@ -1,5 +1,6 @@
 package Server.ErrorHandling;
 
+
 public class AppException extends Exception {
 
     /**
@@ -9,28 +10,26 @@ public class AppException extends Exception {
     Integer status;
 
     /** application specific error code */
-    int code;
+    String code;
 
-    /** link documenting the exception */
-    String link;
+    Object data;
 
     /** detailed error description for developers*/
     String developerMessage;
 
-    /**
-     * @param status
-     * @param code
-     * @param message
-     * @param developerMessage
-     * @param link
-     */
-    public AppException(int status, int code, String message,
-                        String developerMessage, String link) {
-        super(message);
+    public AppException(int status, String code, Object data, String developerMessage) {
+        super(code);
         this.status = status;
         this.code = code;
+        this.data = data;
         this.developerMessage = developerMessage;
-        this.link = link;
+    }
+
+    public AppException(int status, String code, Object data) {
+        super(code);
+        this.status = status;
+        this.code = code;
+        this.data = data;
     }
 
     public AppException() { }
@@ -43,11 +42,15 @@ public class AppException extends Exception {
         this.status = status;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public Object getData() {
+        return data;
+    }
+
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -59,12 +62,12 @@ public class AppException extends Exception {
         this.developerMessage = developerMessage;
     }
 
-    public String getLink() {
-        return link;
+    public void setData(Object data) {
+        this.data = data;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
 }

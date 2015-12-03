@@ -1,11 +1,10 @@
 package Server.ErrorHandling;
 
-import java.lang.reflect.InvocationTargetException;
+
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
-
-import org.apache.commons.beanutils.BeanUtils;
 
 
 public class ErrorMessage {
@@ -14,13 +13,10 @@ public class ErrorMessage {
 	int status;
 	
 	/** application specific error code */
-	int code;
-	
+	String code;
+
 	/** message describing the error*/
-	String message;
-		
-	/** link point to page where the error message is documented */
-	String link;
+	Object data;
 	
 	/** extra information that might useful for developers */
 	String developerMessage;
@@ -36,20 +32,20 @@ public class ErrorMessage {
 		this.status = status;
 	}
 
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(int code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 
-	public String getMessage() {
-		return message;
+	public Object getData() {
+		return data;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setData(Object data) {
+		this.data = data;
 	}
 
 	public String getDeveloperMessage() {
@@ -58,14 +54,6 @@ public class ErrorMessage {
 
 	public void setDeveloperMessage(String developerMessage) {
 		this.developerMessage = developerMessage;
-	}
-
-	public String getLink() {
-		return link;
-	}
-
-	public void setLink(String link) {
-		this.link = link;
 	}
 
 	public String getType() {
@@ -77,26 +65,30 @@ public class ErrorMessage {
 	}
 	
 	public ErrorMessage(AppException ex){
-		try {
-			BeanUtils.copyProperties(this, ex);
-
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			this.status = 500;
-			this.code = 500;
-			this.message = "Server Internal Error";
-			this.link = "";
-			this.developerMessage = e.getMessage();
-		}
-
-		this.type = "Error";
+		this.type =  "ERROR";
+		this.status= ex.getStatus();
+		this.code =  ex.getCode();
+		this.data =  ex.getData();
+		this.developerMessage = ex.getDeveloperMessage();
 	}
 	
 	public ErrorMessage(NotFoundException ex){
-		this.type = "Error";
+		this.type = "ERROR";
 		this.status = Response.Status.NOT_FOUND.getStatusCode();
-		this.message = ex.getMessage();
-		this.link = "https://jersey.java.net/apidocs/2.8/jersey/javax/ws/rs/NotFoundException.html";		
+		this.code = "NOT_FOUND_" + this.status;
+		this.developerMessage = ex.getMessage();
+		this.data = ex.getStackTrace();
 	}
 
-	public ErrorMessage() {}
+	public ErrorMessage(JsonMappingException ex) {
+		this.type = "ERROR";
+		this.status = 400;
+		this.code = "BAD_FORMATTED_JSON";
+		this.developerMessage = ex.getMessage();
+		this.data = ex.getStackTrace();
+	}
+
+	public ErrorMessage() {
+		this.type = "ERROR";
+	}
 }

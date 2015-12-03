@@ -16,8 +16,8 @@ import javax.persistence.Table;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record7;
-import org.jooq.Row7;
+import org.jooq.Record8;
+import org.jooq.Row8;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
@@ -34,9 +34,9 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "user", schema = "vvv")
-public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Record7<Integer, String, String, String, byte[], Timestamp, Timestamp> {
+public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Record8<Integer, String, String, String, byte[], Timestamp, Timestamp, Byte> {
 
-	private static final long serialVersionUID = 884016589;
+	private static final long serialVersionUID = 707945509;
 
 	/**
 	 * Setter for <code>vvv.user.id</code>.
@@ -144,6 +144,21 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
 		return (Timestamp) getValue(6);
 	}
 
+	/**
+	 * Setter for <code>vvv.user.type</code>.
+	 */
+	public void setType(Byte value) {
+		setValue(7, value);
+	}
+
+	/**
+	 * Getter for <code>vvv.user.type</code>.
+	 */
+	@Column(name = "type", nullable = false, precision = 3)
+	public Byte getType() {
+		return (Byte) getValue(7);
+	}
+
 	// -------------------------------------------------------------------------
 	// Primary key information
 	// -------------------------------------------------------------------------
@@ -157,23 +172,23 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
 	}
 
 	// -------------------------------------------------------------------------
-	// Record7 type implementation
+	// Record8 type implementation
 	// -------------------------------------------------------------------------
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row7<Integer, String, String, String, byte[], Timestamp, Timestamp> fieldsRow() {
-		return (Row7) super.fieldsRow();
+	public Row8<Integer, String, String, String, byte[], Timestamp, Timestamp, Byte> fieldsRow() {
+		return (Row8) super.fieldsRow();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row7<Integer, String, String, String, byte[], Timestamp, Timestamp> valuesRow() {
-		return (Row7) super.valuesRow();
+	public Row8<Integer, String, String, String, byte[], Timestamp, Timestamp, Byte> valuesRow() {
+		return (Row8) super.valuesRow();
 	}
 
 	/**
@@ -236,6 +251,14 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
 	 * {@inheritDoc}
 	 */
 	@Override
+	public Field<Byte> field8() {
+		return User.USER.TYPE;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public Integer value1() {
 		return getId();
 	}
@@ -286,6 +309,14 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
 	@Override
 	public Timestamp value7() {
 		return getUpdatedAt();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Byte value8() {
+		return getType();
 	}
 
 	/**
@@ -355,7 +386,16 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
 	 * {@inheritDoc}
 	 */
 	@Override
-	public UserRecord values(Integer value1, String value2, String value3, String value4, byte[] value5, Timestamp value6, Timestamp value7) {
+	public UserRecord value8(Byte value) {
+		setType(value);
+		return this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public UserRecord values(Integer value1, String value2, String value3, String value4, byte[] value5, Timestamp value6, Timestamp value7, Byte value8) {
 		value1(value1);
 		value2(value2);
 		value3(value3);
@@ -363,6 +403,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
 		value5(value5);
 		value6(value6);
 		value7(value7);
+		value8(value8);
 		return this;
 	}
 
@@ -380,7 +421,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
 	/**
 	 * Create a detached, initialised UserRecord
 	 */
-	public UserRecord(Integer id, String firstName, String lastName, String email, byte[] passwordHash, Timestamp createdAt, Timestamp updatedAt) {
+	public UserRecord(Integer id, String firstName, String lastName, String email, byte[] passwordHash, Timestamp createdAt, Timestamp updatedAt, Byte type) {
 		super(User.USER);
 
 		setValue(0, id);
@@ -390,5 +431,6 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
 		setValue(4, passwordHash);
 		setValue(5, createdAt);
 		setValue(6, updatedAt);
+		setValue(7, type);
 	}
 }
