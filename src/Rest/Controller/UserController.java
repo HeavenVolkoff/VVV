@@ -9,6 +9,7 @@ import Server.ResponseMessage;
 import Server.Utility.DbFactory;
 import Server.Utility.FactoryException;
 import Server.Utility.ValidatorFactory;
+import org.jooq.Configuration;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.validation.ConstraintViolation;
@@ -26,11 +27,25 @@ import static java.util.concurrent.TimeUnit.*;
 @Path("user")
 public class UserController {
 
+    @POST
+    @Path("ping")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResponseMessage ping(@QueryParam("userId") int userId, String token) throws AppException {
+        try(DbFactory.Db db = DbFactory.openConnection()){
+            checkIfLoggedIn(userId, token, db.getConfiguration());
+
+            return new ResponseMessage("PONG", "It's Alive");
+
+        } catch (SQLException | FactoryException e) {
+            throw new AppException(500, "DB_ERROR", e.getStackTrace(), e.getMessage());
+        }
+    }
+
     @GET
     @Path("get")
     @Produces(MediaType.APPLICATION_JSON)
     public ResponseMessage get(@QueryParam("id") int id) throws AppException {
-
         try(DbFactory.Db db = DbFactory.openConnection()){ //Try with resources
             UserDao userDao = new UserDao(db.getConfiguration());
             User user = userDao.findById(id);
@@ -110,33 +125,12 @@ public class UserController {
                 throw new AppException(401, "INVALID_CREDENTIALS", "Username or Password are Invalid");
             }
 
-            OauthDao authorizationDao = new OauthDao(db.getConfiguration());
-            Oauth oldAuth = authorizationDao.fetchOneByUserId(user.getId());
+            byte[] token = generateOAuthToken(user, db.getConfiguration());
 
-            if(oldAuth != null){
-                if(oldAuth.getCreatedAt().getTime() - (new Date()).getTime() < MILLISECONDS.convert(1, DAYS)){
-                    return new ResponseMessage("LOGGED_IN", Base64.getEncoder().encodeToString(oldAuth.getToken()));
-
-                }else{
-                    authorizationDao.delete(oldAuth);
-                }
-            }
-
-            byte[] uniqueIdentifier =
-                    BCrypt.hashpw(
-                            user.getFirstName() + user.getEmail() + user.getLastName() + user.getCreatedAt(),
-                            BCrypt.gensalt(12)
-                    ).getBytes();//length 60
-            byte[] randomIdentifier = UUID.randomUUID().toString().getBytes();//length: 36
-            byte[] token = new byte[uniqueIdentifier.length + randomIdentifier.length];//length: 96
-
-            System.arraycopy(uniqueIdentifier, 0, token, 0, uniqueIdentifier.length);
-            System.arraycopy(randomIdentifier, 0, token, uniqueIdentifier.length, randomIdentifier.length);
-
-            Oauth authorization = new Oauth(token, new Timestamp((new Date()).getTime()), user.getId());
-            authorizationDao.insert(authorization);
-
-            return new ResponseMessage("LOGGED_IN", Base64.getEncoder().encodeToString(token));
+            return new ResponseMessage("LOGGED_IN", new HashMap<String, Object>(){{
+                put("token", Base64.getEncoder().encodeToString(token));
+                put("userId", user.getId());
+            }});
 
         } catch (SQLException | FactoryException e) {
             throw new AppException(500, "DB_ERROR", e.getStackTrace(), e.getMessage());
@@ -144,5 +138,67 @@ public class UserController {
         } catch (UnsupportedEncodingException e){
             throw new AppException(401, "INVALID_ENCODING", "Username or Password have invalid encoding");
         }
+    }
+
+    //########################### Private Methods ###############################
+
+    private byte[] generateOAuthToken(User user, Configuration dbConfig){
+        OauthDao authDao = new OauthDao(dbConfig);
+        Oauth auth = authDao.fetchOneByUserId(user.getId());
+        long now = (new Date()).getTime();
+
+        if(auth != null){
+            if(now - auth.getCreatedAt().getTime() < MILLISECONDS.convert(1, HOURS)){
+                return auth.getToken();
+
+            }else{
+                authDao.delete(auth);
+                auth.setCreatedAt(new Timestamp(now));
+            }
+
+        }else{
+            auth = new Oauth(null, new Timestamp(now), user.getId());
+        }
+
+        byte[] uniqueIdentifier =
+                BCrypt.hashpw(
+                        user.getFirstName() + user.getEmail() + user.getLastName() + user.getCreatedAt().getTime(),
+                        BCrypt.gensalt(12)
+                ).getBytes();//length 60
+        byte[] randomIdentifier = UUID.randomUUID().toString().getBytes();//length: 36
+        byte[] token = new byte[uniqueIdentifier.length + randomIdentifier.length];//length: 96
+
+        System.arraycopy(uniqueIdentifier, 0, token, 0, uniqueIdentifier.length);
+        System.arraycopy(randomIdentifier, 0, token, uniqueIdentifier.length, randomIdentifier.length);
+
+        auth.setToken(token);
+        authDao.insert(auth);
+
+        return token;
+    }
+
+    private void checkIfLoggedIn(int id, String token, Configuration dbConfig) throws AppException {
+        long now = (new Date()).getTime();
+
+        if(token == null){
+            throw new AppException(401, "NOT_NULL", "Token is required");
+        }
+
+        OauthDao authDao = new OauthDao(dbConfig);
+        Oauth auth = authDao.fetchOneByUserId(id);
+
+        if(auth == null){
+            throw new AppException(401, "USER_NOT_LOGGED", "User isn't logged in");
+        }
+
+        if(!Arrays.equals(auth.getToken(), Base64.getDecoder().decode(token))){
+            throw new AppException(401, "INVALID_TOKEN", "Token is invalid");
+
+        } else if(now - auth.getCreatedAt().getTime() > MILLISECONDS.convert(1, HOURS)){
+            throw new AppException(401, "EXPIRED_TOKEN", "Token is expired");
+        }
+
+        auth.setCreatedAt(new Timestamp(now)); //TODO: Change db field created_at to last_login
+        authDao.update(auth);
     }
 }

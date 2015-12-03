@@ -110,7 +110,7 @@ public final class DbFactory {
     //TODO: implement this later
     private TimerTask clearTask;
 
-    private DbFactory() {
+    private DbFactory() throws FactoryException {
         this.url = "jdbc:mysql://localhost:3306/vvv";
         this.username = "java";
         this.password = "";
@@ -123,9 +123,8 @@ public final class DbFactory {
         try {
             Class.forName("com.mysql.jdbc.Driver");
 
-        } catch (Exception e) {
-            /*Log*/
-            //TODO: Answer All requests with database error page <- use jersey filter
+        } catch (ClassNotFoundException e) {
+           throw new FactoryException("MySQL Driver Class Not Found");
         }
     }
 
