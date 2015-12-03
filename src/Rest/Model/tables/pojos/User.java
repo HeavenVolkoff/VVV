@@ -6,7 +6,6 @@ package Rest.Model.tables.pojos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
-import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -51,10 +50,6 @@ public class User implements Serializable {
 	@Email(message = "INVALID_EMAIL")
 	private String    email;
 
-	@NotNull(message = "NOT_NULL")
-	@Size(min = 6, message = "TOO_SHORT")
-	private String password;
-
 	@JsonIgnore
 	private byte[]    passwordHash;
 
@@ -74,9 +69,7 @@ public class User implements Serializable {
 		this.firstName = value.firstName;
 		this.lastName = value.lastName;
 		this.email = value.email;
-		this.password = value.password;
-		this.passwordHash = (value.passwordHash == null || value.passwordHash.length == 0) && value.password.length() > 0?
-								BCrypt.hashpw(value.password, BCrypt.gensalt(12)).getBytes() : value.passwordHash;
+		this.passwordHash = value.passwordHash;
 		this.createdAt = value.createdAt;
 		this.updatedAt = value.updatedAt;
 		this.type = value.type;
@@ -96,29 +89,7 @@ public class User implements Serializable {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.password = null;
 		this.passwordHash = passwordHash;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.type = type;
-	}
-
-	public User(
-			Integer   id,
-			String    firstName,
-			String    lastName,
-			String    email,
-			String    password,
-			Timestamp createdAt,
-			Timestamp updatedAt,
-			Byte      type
-	) {
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.password = password;
-		this.passwordHash = BCrypt.hashpw(password, BCrypt.gensalt(12)).getBytes();
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.type = type;
@@ -170,11 +141,6 @@ public class User implements Serializable {
 		this.passwordHash = passwordHash;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-		this.passwordHash = BCrypt.hashpw(password, BCrypt.gensalt(12)).getBytes();
-	}
-
 	@Column(name = "created_at", nullable = false)
 	public Timestamp getCreatedAt() {
 		return this.createdAt;
@@ -182,7 +148,6 @@ public class User implements Serializable {
 
 	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
-		this.updatedAt = createdAt;
 	}
 
 	@Column(name = "updated_at", nullable = false)

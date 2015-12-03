@@ -36,7 +36,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @Table(name = "oAuth", schema = "vvv")
 public class OauthRecord extends UpdatableRecordImpl<OauthRecord> implements Record3<byte[], Timestamp, Integer> {
 
-	private static final long serialVersionUID = -993232986;
+	private static final long serialVersionUID = -2058709694;
 
 	/**
 	 * Setter for <code>vvv.oAuth.token</code>.
@@ -54,17 +54,17 @@ public class OauthRecord extends UpdatableRecordImpl<OauthRecord> implements Rec
 	}
 
 	/**
-	 * Setter for <code>vvv.oAuth.created_at</code>.
+	 * Setter for <code>vvv.oAuth.last_login_at</code>.
 	 */
-	public void setCreatedAt(Timestamp value) {
+	public void setLastLoginAt(Timestamp value) {
 		setValue(1, value);
 	}
 
 	/**
-	 * Getter for <code>vvv.oAuth.created_at</code>.
+	 * Getter for <code>vvv.oAuth.last_login_at</code>.
 	 */
-	@Column(name = "created_at", nullable = false)
-	public Timestamp getCreatedAt() {
+	@Column(name = "last_login_at", nullable = false)
+	public Timestamp getLastLoginAt() {
 		return (Timestamp) getValue(1);
 	}
 
@@ -129,7 +129,7 @@ public class OauthRecord extends UpdatableRecordImpl<OauthRecord> implements Rec
 	 */
 	@Override
 	public Field<Timestamp> field2() {
-		return Oauth.OAUTH.CREATED_AT;
+		return Oauth.OAUTH.LAST_LOGIN_AT;
 	}
 
 	/**
@@ -153,7 +153,7 @@ public class OauthRecord extends UpdatableRecordImpl<OauthRecord> implements Rec
 	 */
 	@Override
 	public Timestamp value2() {
-		return getCreatedAt();
+		return getLastLoginAt();
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class OauthRecord extends UpdatableRecordImpl<OauthRecord> implements Rec
 	 */
 	@Override
 	public OauthRecord value2(Timestamp value) {
-		setCreatedAt(value);
+		setLastLoginAt(value);
 		return this;
 	}
 
@@ -216,11 +216,11 @@ public class OauthRecord extends UpdatableRecordImpl<OauthRecord> implements Rec
 	/**
 	 * Create a detached, initialised OauthRecord
 	 */
-	public OauthRecord(byte[] token, Timestamp createdAt, Integer userId) {
+	public OauthRecord(byte[] token, Timestamp lastLoginAt, Integer userId) {
 		super(Oauth.OAUTH);
 
 		setValue(0, token);
-		setValue(1, createdAt);
+		setValue(1, lastLoginAt);
 		setValue(2, userId);
 	}
 }

@@ -59,10 +59,10 @@ public class OauthDao extends DAOImpl<OauthRecord, Rest.Model.tables.pojos.Oauth
 	}
 
 	/**
-	 * Fetch records that have <code>created_at IN (values)</code>
+	 * Fetch records that have <code>last_login_at IN (values)</code>
 	 */
-	public List<Rest.Model.tables.pojos.Oauth> fetchByCreatedAt(Timestamp... values) {
-		return fetch(Oauth.OAUTH.CREATED_AT, values);
+	public List<Rest.Model.tables.pojos.Oauth> fetchByLastLoginAt(Timestamp... values) {
+		return fetch(Oauth.OAUTH.LAST_LOGIN_AT, values);
 	}
 
 	/**

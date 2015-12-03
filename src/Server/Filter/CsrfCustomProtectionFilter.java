@@ -33,10 +33,10 @@ public class CsrfCustomProtectionFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext rc) throws IOException {
-        String CsrfKey = rc.getHeaders().getFirst(HEADER_NAME);
+        String csrfKey = rc.getHeaders().getFirst(HEADER_NAME);
 
         try {
-            if(!METHODS_TO_IGNORE.contains(rc.getMethod()) && (CsrfKey == null || !BCrypt.checkpw("CSRF_KEY_VVV_SYSTEM_176907663", CsrfKey))){
+            if(!METHODS_TO_IGNORE.contains(rc.getMethod()) && (csrfKey == null || !BCrypt.checkpw("CSRF_KEY_VVV_SYSTEM_176907663", csrfKey))){
                 throw new BadRequestException();
             }
         }catch (Exception e){

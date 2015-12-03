@@ -35,7 +35,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Oauth extends TableImpl<OauthRecord> {
 
-	private static final long serialVersionUID = 2123446257;
+	private static final long serialVersionUID = 1093983297;
 
 	/**
 	 * The reference instance of <code>vvv.oAuth</code>
@@ -56,9 +56,9 @@ public class Oauth extends TableImpl<OauthRecord> {
 	public final TableField<OauthRecord, byte[]> TOKEN = createField("token", org.jooq.impl.SQLDataType.BINARY.length(96).nullable(false), this, "");
 
 	/**
-	 * The column <code>vvv.oAuth.created_at</code>.
+	 * The column <code>vvv.oAuth.last_login_at</code>.
 	 */
-	public final TableField<OauthRecord, Timestamp> CREATED_AT = createField("created_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+	public final TableField<OauthRecord, Timestamp> LAST_LOGIN_AT = createField("last_login_at", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
 
 	/**
 	 * The column <code>vvv.oAuth.user_id</code>.

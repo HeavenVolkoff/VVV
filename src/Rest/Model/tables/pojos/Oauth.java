@@ -29,27 +29,27 @@ import javax.persistence.Table;
 @Table(name = "oAuth", schema = "vvv")
 public class Oauth implements Serializable {
 
-	private static final long serialVersionUID = -1403579737;
+	private static final long serialVersionUID = 870600466;
 
 	private byte[]    token;
-	private Timestamp createdAt;
+	private Timestamp lastLoginAt;
 	private Integer   userId;
 
 	public Oauth() {}
 
 	public Oauth(Oauth value) {
 		this.token = value.token;
-		this.createdAt = value.createdAt;
+		this.lastLoginAt = value.lastLoginAt;
 		this.userId = value.userId;
 	}
 
 	public Oauth(
 		byte[]    token,
-		Timestamp createdAt,
+		Timestamp lastLoginAt,
 		Integer   userId
 	) {
 		this.token = token;
-		this.createdAt = createdAt;
+		this.lastLoginAt = lastLoginAt;
 		this.userId = userId;
 	}
 
@@ -62,13 +62,13 @@ public class Oauth implements Serializable {
 		this.token = token;
 	}
 
-	@Column(name = "created_at", nullable = false)
-	public Timestamp getCreatedAt() {
-		return this.createdAt;
+	@Column(name = "last_login_at", nullable = false)
+	public Timestamp getLastLoginAt() {
+		return this.lastLoginAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt = createdAt;
+	public void setLastLoginAt(Timestamp lastLoginAt) {
+		this.lastLoginAt = lastLoginAt;
 	}
 
 	@Id
@@ -86,7 +86,7 @@ public class Oauth implements Serializable {
 		StringBuilder sb = new StringBuilder("Oauth (");
 
 		sb.append("[binary...]");
-		sb.append(", ").append(createdAt);
+		sb.append(", ").append(lastLoginAt);
 		sb.append(", ").append(userId);
 
 		sb.append(")");

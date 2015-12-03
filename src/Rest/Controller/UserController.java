@@ -65,7 +65,7 @@ public class UserController {
     @Path("create")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public Response create(User user) throws AppException {
+    public Response create(Rest.Model.pojoExtended.User user) throws AppException {
         HashMap<String, String> errorData = new HashMap<>();
 
         try(DbFactory.Db db = DbFactory.openConnection()){ //Try with resources
@@ -148,12 +148,12 @@ public class UserController {
         long now = (new Date()).getTime();
 
         if(auth != null){
-            if(now - auth.getCreatedAt().getTime() < MILLISECONDS.convert(1, HOURS)){
+            if(now - auth.getLastLoginAt().getTime() < MILLISECONDS.convert(1, HOURS)){
                 return auth.getToken();
 
             }else{
                 authDao.delete(auth);
-                auth.setCreatedAt(new Timestamp(now));
+                auth.setLastLoginAt(new Timestamp(now));
             }
 
         }else{
@@ -194,11 +194,11 @@ public class UserController {
         if(!Arrays.equals(auth.getToken(), Base64.getDecoder().decode(token))){
             throw new AppException(401, "INVALID_TOKEN", "Token is invalid");
 
-        } else if(now - auth.getCreatedAt().getTime() > MILLISECONDS.convert(1, HOURS)){
+        } else if(now - auth.getLastLoginAt().getTime() > MILLISECONDS.convert(1, HOURS)){
             throw new AppException(401, "EXPIRED_TOKEN", "Token is expired");
         }
 
-        auth.setCreatedAt(new Timestamp(now)); //TODO: Change db field created_at to last_login
+        auth.setLastLoginAt(new Timestamp(now)); //TODO: Change db field created_at to last_login
         authDao.update(auth);
     }
 }
