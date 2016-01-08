@@ -4,9 +4,7 @@
 package Rest.Model.tables.records;
 
 
-import Rest.Model.tables.CreditCard;
-
-import java.sql.Date;
+import Rest.Model.tables.Passenger;
 
 import javax.annotation.Generated;
 import javax.persistence.Column;
@@ -33,20 +31,20 @@ import org.jooq.impl.UpdatableRecordImpl;
 )
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
-@Table(name = "credit_card", schema = "vvv")
-public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> implements Record5<Integer, Integer, String, Date, Integer> {
+@Table(name = "passenger", schema = "vvv")
+public class PassengerRecord extends UpdatableRecordImpl<PassengerRecord> implements Record5<Integer, String, String, String, Integer> {
 
-	private static final long serialVersionUID = -1423354458;
+	private static final long serialVersionUID = 643646447;
 
 	/**
-	 * Setter for <code>vvv.credit_card.user_id</code>.
+	 * Setter for <code>vvv.passenger.user_id</code>.
 	 */
 	public void setUserId(Integer value) {
 		setValue(0, value);
 	}
 
 	/**
-	 * Getter for <code>vvv.credit_card.user_id</code>.
+	 * Getter for <code>vvv.passenger.user_id</code>.
 	 */
 	@Id
 	@Column(name = "user_id", unique = true, nullable = false, precision = 10)
@@ -55,61 +53,61 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	}
 
 	/**
-	 * Setter for <code>vvv.credit_card.number</code>.
+	 * Setter for <code>vvv.passenger.cpf</code>.
 	 */
-	public void setNumber(Integer value) {
+	public void setCpf(String value) {
 		setValue(1, value);
 	}
 
 	/**
-	 * Getter for <code>vvv.credit_card.number</code>.
+	 * Getter for <code>vvv.passenger.cpf</code>.
 	 */
-	@Column(name = "number", nullable = false, precision = 10)
-	public Integer getNumber() {
-		return (Integer) getValue(1);
+	@Column(name = "cpf", unique = true, length = 11)
+	public String getCpf() {
+		return (String) getValue(1);
 	}
 
 	/**
-	 * Setter for <code>vvv.credit_card.holder_name</code>.
+	 * Setter for <code>vvv.passenger.phone</code>.
 	 */
-	public void setHolderName(String value) {
+	public void setPhone(String value) {
 		setValue(2, value);
 	}
 
 	/**
-	 * Getter for <code>vvv.credit_card.holder_name</code>.
+	 * Getter for <code>vvv.passenger.phone</code>.
 	 */
-	@Column(name = "holder_name", nullable = false, length = 255)
-	public String getHolderName() {
+	@Column(name = "phone", nullable = false, length = 50)
+	public String getPhone() {
 		return (String) getValue(2);
 	}
 
 	/**
-	 * Setter for <code>vvv.credit_card.expire</code>.
+	 * Setter for <code>vvv.passenger.occupation</code>.
 	 */
-	public void setExpire(Date value) {
+	public void setOccupation(String value) {
 		setValue(3, value);
 	}
 
 	/**
-	 * Getter for <code>vvv.credit_card.expire</code>.
+	 * Getter for <code>vvv.passenger.occupation</code>.
 	 */
-	@Column(name = "expire", nullable = false)
-	public Date getExpire() {
-		return (Date) getValue(3);
+	@Column(name = "occupation", nullable = false, length = 255)
+	public String getOccupation() {
+		return (String) getValue(3);
 	}
 
 	/**
-	 * Setter for <code>vvv.credit_card.address_id</code>.
+	 * Setter for <code>vvv.passenger.address_id</code>.
 	 */
 	public void setAddressId(Integer value) {
 		setValue(4, value);
 	}
 
 	/**
-	 * Getter for <code>vvv.credit_card.address_id</code>.
+	 * Getter for <code>vvv.passenger.address_id</code>.
 	 */
-	@Column(name = "address_id", precision = 10)
+	@Column(name = "address_id", unique = true, nullable = false, precision = 10)
 	public Integer getAddressId() {
 		return (Integer) getValue(4);
 	}
@@ -134,7 +132,7 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row5<Integer, Integer, String, Date, Integer> fieldsRow() {
+	public Row5<Integer, String, String, String, Integer> fieldsRow() {
 		return (Row5) super.fieldsRow();
 	}
 
@@ -142,7 +140,7 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row5<Integer, Integer, String, Date, Integer> valuesRow() {
+	public Row5<Integer, String, String, String, Integer> valuesRow() {
 		return (Row5) super.valuesRow();
 	}
 
@@ -151,15 +149,15 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 */
 	@Override
 	public Field<Integer> field1() {
-		return CreditCard.CREDIT_CARD.USER_ID;
+		return Passenger.PASSENGER.USER_ID;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<Integer> field2() {
-		return CreditCard.CREDIT_CARD.NUMBER;
+	public Field<String> field2() {
+		return Passenger.PASSENGER.CPF;
 	}
 
 	/**
@@ -167,15 +165,15 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 */
 	@Override
 	public Field<String> field3() {
-		return CreditCard.CREDIT_CARD.HOLDER_NAME;
+		return Passenger.PASSENGER.PHONE;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<Date> field4() {
-		return CreditCard.CREDIT_CARD.EXPIRE;
+	public Field<String> field4() {
+		return Passenger.PASSENGER.OCCUPATION;
 	}
 
 	/**
@@ -183,7 +181,7 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 */
 	@Override
 	public Field<Integer> field5() {
-		return CreditCard.CREDIT_CARD.ADDRESS_ID;
+		return Passenger.PASSENGER.ADDRESS_ID;
 	}
 
 	/**
@@ -198,8 +196,8 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Integer value2() {
-		return getNumber();
+	public String value2() {
+		return getCpf();
 	}
 
 	/**
@@ -207,15 +205,15 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 */
 	@Override
 	public String value3() {
-		return getHolderName();
+		return getPhone();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Date value4() {
-		return getExpire();
+	public String value4() {
+		return getOccupation();
 	}
 
 	/**
@@ -230,7 +228,7 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public CreditCardRecord value1(Integer value) {
+	public PassengerRecord value1(Integer value) {
 		setUserId(value);
 		return this;
 	}
@@ -239,8 +237,8 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public CreditCardRecord value2(Integer value) {
-		setNumber(value);
+	public PassengerRecord value2(String value) {
+		setCpf(value);
 		return this;
 	}
 
@@ -248,8 +246,8 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public CreditCardRecord value3(String value) {
-		setHolderName(value);
+	public PassengerRecord value3(String value) {
+		setPhone(value);
 		return this;
 	}
 
@@ -257,8 +255,8 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public CreditCardRecord value4(Date value) {
-		setExpire(value);
+	public PassengerRecord value4(String value) {
+		setOccupation(value);
 		return this;
 	}
 
@@ -266,7 +264,7 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public CreditCardRecord value5(Integer value) {
+	public PassengerRecord value5(Integer value) {
 		setAddressId(value);
 		return this;
 	}
@@ -275,7 +273,7 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public CreditCardRecord values(Integer value1, Integer value2, String value3, Date value4, Integer value5) {
+	public PassengerRecord values(Integer value1, String value2, String value3, String value4, Integer value5) {
 		value1(value1);
 		value2(value2);
 		value3(value3);
@@ -289,22 +287,22 @@ public class CreditCardRecord extends UpdatableRecordImpl<CreditCardRecord> impl
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Create a detached CreditCardRecord
+	 * Create a detached PassengerRecord
 	 */
-	public CreditCardRecord() {
-		super(CreditCard.CREDIT_CARD);
+	public PassengerRecord() {
+		super(Passenger.PASSENGER);
 	}
 
 	/**
-	 * Create a detached, initialised CreditCardRecord
+	 * Create a detached, initialised PassengerRecord
 	 */
-	public CreditCardRecord(Integer userId, Integer number, String holderName, Date expire, Integer addressId) {
-		super(CreditCard.CREDIT_CARD);
+	public PassengerRecord(Integer userId, String cpf, String phone, String occupation, Integer addressId) {
+		super(Passenger.PASSENGER);
 
 		setValue(0, userId);
-		setValue(1, number);
-		setValue(2, holderName);
-		setValue(3, expire);
+		setValue(1, cpf);
+		setValue(2, phone);
+		setValue(3, occupation);
 		setValue(4, addressId);
 	}
 }

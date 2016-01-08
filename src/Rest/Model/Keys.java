@@ -5,12 +5,30 @@ package Rest.Model;
 
 
 import Rest.Model.tables.Address;
-import Rest.Model.tables.CreditCard;
+import Rest.Model.tables.Carrier;
+import Rest.Model.tables.City;
+import Rest.Model.tables.Employee;
+import Rest.Model.tables.Itinerary;
+import Rest.Model.tables.Modal;
 import Rest.Model.tables.Oauth;
+import Rest.Model.tables.Passenger;
+import Rest.Model.tables.Reservation;
+import Rest.Model.tables.RetailOutlet;
+import Rest.Model.tables.Route;
+import Rest.Model.tables.Staff;
 import Rest.Model.tables.User;
 import Rest.Model.tables.records.AddressRecord;
-import Rest.Model.tables.records.CreditCardRecord;
+import Rest.Model.tables.records.CarrierRecord;
+import Rest.Model.tables.records.CityRecord;
+import Rest.Model.tables.records.EmployeeRecord;
+import Rest.Model.tables.records.ItineraryRecord;
+import Rest.Model.tables.records.ModalRecord;
 import Rest.Model.tables.records.OauthRecord;
+import Rest.Model.tables.records.PassengerRecord;
+import Rest.Model.tables.records.ReservationRecord;
+import Rest.Model.tables.records.RetailOutletRecord;
+import Rest.Model.tables.records.RouteRecord;
+import Rest.Model.tables.records.StaffRecord;
 import Rest.Model.tables.records.UserRecord;
 
 import javax.annotation.Generated;
@@ -47,9 +65,21 @@ public class Keys {
 	// -------------------------------------------------------------------------
 
 	public static final UniqueKey<AddressRecord> KEY_ADDRESS_PRIMARY = UniqueKeys0.KEY_ADDRESS_PRIMARY;
-	public static final UniqueKey<AddressRecord> KEY_ADDRESS_USER_ID_UNIQUE = UniqueKeys0.KEY_ADDRESS_USER_ID_UNIQUE;
-	public static final UniqueKey<CreditCardRecord> KEY_CREDIT_CARD_PRIMARY = UniqueKeys0.KEY_CREDIT_CARD_PRIMARY;
+	public static final UniqueKey<CarrierRecord> KEY_CARRIER_PRIMARY = UniqueKeys0.KEY_CARRIER_PRIMARY;
+	public static final UniqueKey<CityRecord> KEY_CITY_PRIMARY = UniqueKeys0.KEY_CITY_PRIMARY;
+	public static final UniqueKey<EmployeeRecord> KEY_EMPLOYEE_PRIMARY = UniqueKeys0.KEY_EMPLOYEE_PRIMARY;
+	public static final UniqueKey<EmployeeRecord> KEY_EMPLOYEE_CPF_UNIQUE = UniqueKeys0.KEY_EMPLOYEE_CPF_UNIQUE;
+	public static final UniqueKey<EmployeeRecord> KEY_EMPLOYEE_ADDRESS_ID_UNIQUE = UniqueKeys0.KEY_EMPLOYEE_ADDRESS_ID_UNIQUE;
+	public static final UniqueKey<ItineraryRecord> KEY_ITINERARY_PRIMARY = UniqueKeys0.KEY_ITINERARY_PRIMARY;
+	public static final UniqueKey<ModalRecord> KEY_MODAL_PRIMARY = UniqueKeys0.KEY_MODAL_PRIMARY;
 	public static final UniqueKey<OauthRecord> KEY_OAUTH_PRIMARY = UniqueKeys0.KEY_OAUTH_PRIMARY;
+	public static final UniqueKey<PassengerRecord> KEY_PASSENGER_PRIMARY = UniqueKeys0.KEY_PASSENGER_PRIMARY;
+	public static final UniqueKey<PassengerRecord> KEY_PASSENGER_CPF_UNIQUE = UniqueKeys0.KEY_PASSENGER_CPF_UNIQUE;
+	public static final UniqueKey<PassengerRecord> KEY_PASSENGER_ADDRESS_ID_UNIQUE = UniqueKeys0.KEY_PASSENGER_ADDRESS_ID_UNIQUE;
+	public static final UniqueKey<ReservationRecord> KEY_RESERVATION_PRIMARY = UniqueKeys0.KEY_RESERVATION_PRIMARY;
+	public static final UniqueKey<RetailOutletRecord> KEY_RETAIL_OUTLET_PRIMARY = UniqueKeys0.KEY_RETAIL_OUTLET_PRIMARY;
+	public static final UniqueKey<RouteRecord> KEY_ROUTE_PRIMARY = UniqueKeys0.KEY_ROUTE_PRIMARY;
+	public static final UniqueKey<StaffRecord> KEY_STAFF_PRIMARY = UniqueKeys0.KEY_STAFF_PRIMARY;
 	public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = UniqueKeys0.KEY_USER_PRIMARY;
 	public static final UniqueKey<UserRecord> KEY_USER_EMAIL_UNIQUE = UniqueKeys0.KEY_USER_EMAIL_UNIQUE;
 
@@ -57,10 +87,21 @@ public class Keys {
 	// FOREIGN KEY definitions
 	// -------------------------------------------------------------------------
 
-	public static final ForeignKey<AddressRecord, UserRecord> FK_ADDRESS_USER = ForeignKeys0.FK_ADDRESS_USER;
-	public static final ForeignKey<CreditCardRecord, UserRecord> FK_CREDITCARD_USER1 = ForeignKeys0.FK_CREDITCARD_USER1;
-	public static final ForeignKey<CreditCardRecord, AddressRecord> FK_CREDIT_CARD_ADDRESS1 = ForeignKeys0.FK_CREDIT_CARD_ADDRESS1;
+	public static final ForeignKey<EmployeeRecord, UserRecord> FK_EMPLOYEE_USER1 = ForeignKeys0.FK_EMPLOYEE_USER1;
+	public static final ForeignKey<EmployeeRecord, AddressRecord> FK_EMPLOYEE_ADDRESS1 = ForeignKeys0.FK_EMPLOYEE_ADDRESS1;
+	public static final ForeignKey<ItineraryRecord, ReservationRecord> FK_RESERVATION_HAS_VIAGEM_RESERVATION1 = ForeignKeys0.FK_RESERVATION_HAS_VIAGEM_RESERVATION1;
+	public static final ForeignKey<ItineraryRecord, RouteRecord> FK_RESERVATION_HAS_VIAGEM_VIAGEM1 = ForeignKeys0.FK_RESERVATION_HAS_VIAGEM_VIAGEM1;
+	public static final ForeignKey<ModalRecord, CarrierRecord> FK_MODAL_CARRIERS1 = ForeignKeys0.FK_MODAL_CARRIERS1;
 	public static final ForeignKey<OauthRecord, UserRecord> FK_OAUTH_USER1 = ForeignKeys0.FK_OAUTH_USER1;
+	public static final ForeignKey<PassengerRecord, UserRecord> FK_PASSENGER_USER1 = ForeignKeys0.FK_PASSENGER_USER1;
+	public static final ForeignKey<PassengerRecord, AddressRecord> FK_PASSENGER_ADDRESS1 = ForeignKeys0.FK_PASSENGER_ADDRESS1;
+	public static final ForeignKey<ReservationRecord, PassengerRecord> FK_RESERVATION_PASSENGER1 = ForeignKeys0.FK_RESERVATION_PASSENGER1;
+	public static final ForeignKey<RetailOutletRecord, AddressRecord> FK_RETAIL_OUTLET_ADDRESS1 = ForeignKeys0.FK_RETAIL_OUTLET_ADDRESS1;
+	public static final ForeignKey<RouteRecord, ModalRecord> FK_VIAGEM_MODAL1 = ForeignKeys0.FK_VIAGEM_MODAL1;
+	public static final ForeignKey<RouteRecord, CityRecord> FK_VIAGEM_CITY1 = ForeignKeys0.FK_VIAGEM_CITY1;
+	public static final ForeignKey<RouteRecord, CityRecord> FK_VIAGEM_CITY2 = ForeignKeys0.FK_VIAGEM_CITY2;
+	public static final ForeignKey<StaffRecord, RetailOutletRecord> FK_RETAIL_OUTLET_HAS_EMPLOYEE_RETAIL_OUTLET1 = ForeignKeys0.FK_RETAIL_OUTLET_HAS_EMPLOYEE_RETAIL_OUTLET1;
+	public static final ForeignKey<StaffRecord, EmployeeRecord> FK_RETAIL_OUTLET_HAS_EMPLOYEE_EMPLOYEE1 = ForeignKeys0.FK_RETAIL_OUTLET_HAS_EMPLOYEE_EMPLOYEE1;
 
 	// -------------------------------------------------------------------------
 	// [#1459] distribute members to avoid static initialisers > 64kb
@@ -73,17 +114,40 @@ public class Keys {
 
 	private static class UniqueKeys0 extends AbstractKeys {
 		public static final UniqueKey<AddressRecord> KEY_ADDRESS_PRIMARY = createUniqueKey(Address.ADDRESS, Address.ADDRESS.ID);
-		public static final UniqueKey<AddressRecord> KEY_ADDRESS_USER_ID_UNIQUE = createUniqueKey(Address.ADDRESS, Address.ADDRESS.USER_ID);
-		public static final UniqueKey<CreditCardRecord> KEY_CREDIT_CARD_PRIMARY = createUniqueKey(CreditCard.CREDIT_CARD, CreditCard.CREDIT_CARD.USER_ID);
+		public static final UniqueKey<CarrierRecord> KEY_CARRIER_PRIMARY = createUniqueKey(Carrier.CARRIER, Carrier.CARRIER.ID);
+		public static final UniqueKey<CityRecord> KEY_CITY_PRIMARY = createUniqueKey(City.CITY, City.CITY.ID);
+		public static final UniqueKey<EmployeeRecord> KEY_EMPLOYEE_PRIMARY = createUniqueKey(Employee.EMPLOYEE, Employee.EMPLOYEE.USER_ID);
+		public static final UniqueKey<EmployeeRecord> KEY_EMPLOYEE_CPF_UNIQUE = createUniqueKey(Employee.EMPLOYEE, Employee.EMPLOYEE.CPF);
+		public static final UniqueKey<EmployeeRecord> KEY_EMPLOYEE_ADDRESS_ID_UNIQUE = createUniqueKey(Employee.EMPLOYEE, Employee.EMPLOYEE.ADDRESS_ID);
+		public static final UniqueKey<ItineraryRecord> KEY_ITINERARY_PRIMARY = createUniqueKey(Itinerary.ITINERARY, Itinerary.ITINERARY.RESERVATION_ID, Itinerary.ITINERARY.VIAGEM_ID);
+		public static final UniqueKey<ModalRecord> KEY_MODAL_PRIMARY = createUniqueKey(Modal.MODAL, Modal.MODAL.ID);
 		public static final UniqueKey<OauthRecord> KEY_OAUTH_PRIMARY = createUniqueKey(Oauth.OAUTH, Oauth.OAUTH.USER_ID);
+		public static final UniqueKey<PassengerRecord> KEY_PASSENGER_PRIMARY = createUniqueKey(Passenger.PASSENGER, Passenger.PASSENGER.USER_ID);
+		public static final UniqueKey<PassengerRecord> KEY_PASSENGER_CPF_UNIQUE = createUniqueKey(Passenger.PASSENGER, Passenger.PASSENGER.CPF);
+		public static final UniqueKey<PassengerRecord> KEY_PASSENGER_ADDRESS_ID_UNIQUE = createUniqueKey(Passenger.PASSENGER, Passenger.PASSENGER.ADDRESS_ID);
+		public static final UniqueKey<ReservationRecord> KEY_RESERVATION_PRIMARY = createUniqueKey(Reservation.RESERVATION, Reservation.RESERVATION.ID);
+		public static final UniqueKey<RetailOutletRecord> KEY_RETAIL_OUTLET_PRIMARY = createUniqueKey(RetailOutlet.RETAIL_OUTLET, RetailOutlet.RETAIL_OUTLET.ID);
+		public static final UniqueKey<RouteRecord> KEY_ROUTE_PRIMARY = createUniqueKey(Route.ROUTE, Route.ROUTE.ID);
+		public static final UniqueKey<StaffRecord> KEY_STAFF_PRIMARY = createUniqueKey(Staff.STAFF, Staff.STAFF.RETAIL_OUTLET_ID, Staff.STAFF.EMPLOYEE_USER_ID);
 		public static final UniqueKey<UserRecord> KEY_USER_PRIMARY = createUniqueKey(User.USER, User.USER.ID);
 		public static final UniqueKey<UserRecord> KEY_USER_EMAIL_UNIQUE = createUniqueKey(User.USER, User.USER.EMAIL);
 	}
 
 	private static class ForeignKeys0 extends AbstractKeys {
-		public static final ForeignKey<AddressRecord, UserRecord> FK_ADDRESS_USER = createForeignKey(Rest.Model.Keys.KEY_USER_PRIMARY, Address.ADDRESS, Address.ADDRESS.USER_ID);
-		public static final ForeignKey<CreditCardRecord, UserRecord> FK_CREDITCARD_USER1 = createForeignKey(Rest.Model.Keys.KEY_USER_PRIMARY, CreditCard.CREDIT_CARD, CreditCard.CREDIT_CARD.USER_ID);
-		public static final ForeignKey<CreditCardRecord, AddressRecord> FK_CREDIT_CARD_ADDRESS1 = createForeignKey(Rest.Model.Keys.KEY_ADDRESS_PRIMARY, CreditCard.CREDIT_CARD, CreditCard.CREDIT_CARD.ADDRESS_ID);
+		public static final ForeignKey<EmployeeRecord, UserRecord> FK_EMPLOYEE_USER1 = createForeignKey(Rest.Model.Keys.KEY_USER_PRIMARY, Employee.EMPLOYEE, Employee.EMPLOYEE.USER_ID);
+		public static final ForeignKey<EmployeeRecord, AddressRecord> FK_EMPLOYEE_ADDRESS1 = createForeignKey(Rest.Model.Keys.KEY_ADDRESS_PRIMARY, Employee.EMPLOYEE, Employee.EMPLOYEE.ADDRESS_ID);
+		public static final ForeignKey<ItineraryRecord, ReservationRecord> FK_RESERVATION_HAS_VIAGEM_RESERVATION1 = createForeignKey(Rest.Model.Keys.KEY_RESERVATION_PRIMARY, Itinerary.ITINERARY, Itinerary.ITINERARY.RESERVATION_ID);
+		public static final ForeignKey<ItineraryRecord, RouteRecord> FK_RESERVATION_HAS_VIAGEM_VIAGEM1 = createForeignKey(Rest.Model.Keys.KEY_ROUTE_PRIMARY, Itinerary.ITINERARY, Itinerary.ITINERARY.VIAGEM_ID);
+		public static final ForeignKey<ModalRecord, CarrierRecord> FK_MODAL_CARRIERS1 = createForeignKey(Rest.Model.Keys.KEY_CARRIER_PRIMARY, Modal.MODAL, Modal.MODAL.CARRIERS_ID);
 		public static final ForeignKey<OauthRecord, UserRecord> FK_OAUTH_USER1 = createForeignKey(Rest.Model.Keys.KEY_USER_PRIMARY, Oauth.OAUTH, Oauth.OAUTH.USER_ID);
+		public static final ForeignKey<PassengerRecord, UserRecord> FK_PASSENGER_USER1 = createForeignKey(Rest.Model.Keys.KEY_USER_PRIMARY, Passenger.PASSENGER, Passenger.PASSENGER.USER_ID);
+		public static final ForeignKey<PassengerRecord, AddressRecord> FK_PASSENGER_ADDRESS1 = createForeignKey(Rest.Model.Keys.KEY_ADDRESS_PRIMARY, Passenger.PASSENGER, Passenger.PASSENGER.ADDRESS_ID);
+		public static final ForeignKey<ReservationRecord, PassengerRecord> FK_RESERVATION_PASSENGER1 = createForeignKey(Rest.Model.Keys.KEY_PASSENGER_PRIMARY, Reservation.RESERVATION, Reservation.RESERVATION.PASSENGER_USER_ID);
+		public static final ForeignKey<RetailOutletRecord, AddressRecord> FK_RETAIL_OUTLET_ADDRESS1 = createForeignKey(Rest.Model.Keys.KEY_ADDRESS_PRIMARY, RetailOutlet.RETAIL_OUTLET, RetailOutlet.RETAIL_OUTLET.ADDRESS_ID);
+		public static final ForeignKey<RouteRecord, ModalRecord> FK_VIAGEM_MODAL1 = createForeignKey(Rest.Model.Keys.KEY_MODAL_PRIMARY, Route.ROUTE, Route.ROUTE.MODAL_ID);
+		public static final ForeignKey<RouteRecord, CityRecord> FK_VIAGEM_CITY1 = createForeignKey(Rest.Model.Keys.KEY_CITY_PRIMARY, Route.ROUTE, Route.ROUTE.ORIGIN_ID);
+		public static final ForeignKey<RouteRecord, CityRecord> FK_VIAGEM_CITY2 = createForeignKey(Rest.Model.Keys.KEY_CITY_PRIMARY, Route.ROUTE, Route.ROUTE.DESTINATION_ID);
+		public static final ForeignKey<StaffRecord, RetailOutletRecord> FK_RETAIL_OUTLET_HAS_EMPLOYEE_RETAIL_OUTLET1 = createForeignKey(Rest.Model.Keys.KEY_RETAIL_OUTLET_PRIMARY, Staff.STAFF, Staff.STAFF.RETAIL_OUTLET_ID);
+		public static final ForeignKey<StaffRecord, EmployeeRecord> FK_RETAIL_OUTLET_HAS_EMPLOYEE_EMPLOYEE1 = createForeignKey(Rest.Model.Keys.KEY_EMPLOYEE_PRIMARY, Staff.STAFF, Staff.STAFF.EMPLOYEE_USER_ID);
 	}
 }

@@ -1,6 +1,7 @@
 package Server.Filter;
 
 
+import Server.Application;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.annotation.Priority;
@@ -36,7 +37,7 @@ public class CsrfCustomProtectionFilter implements ContainerRequestFilter {
         String csrfKey = rc.getHeaders().getFirst(HEADER_NAME);
 
         try {
-            if(!METHODS_TO_IGNORE.contains(rc.getMethod()) && (csrfKey == null || !BCrypt.checkpw("CSRF_KEY_VVV_SYSTEM_176907663", csrfKey))){
+            if(!METHODS_TO_IGNORE.contains(rc.getMethod()) && (csrfKey == null || !BCrypt.checkpw(Application.CSRF_KEY, csrfKey))){
                 throw new BadRequestException();
             }
         }catch (Exception e){

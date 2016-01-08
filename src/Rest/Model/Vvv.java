@@ -5,8 +5,17 @@ package Rest.Model;
 
 
 import Rest.Model.tables.Address;
-import Rest.Model.tables.CreditCard;
+import Rest.Model.tables.Carrier;
+import Rest.Model.tables.City;
+import Rest.Model.tables.Employee;
+import Rest.Model.tables.Itinerary;
+import Rest.Model.tables.Modal;
 import Rest.Model.tables.Oauth;
+import Rest.Model.tables.Passenger;
+import Rest.Model.tables.Reservation;
+import Rest.Model.tables.RetailOutlet;
+import Rest.Model.tables.Route;
+import Rest.Model.tables.Staff;
 import Rest.Model.tables.User;
 
 import java.util.ArrayList;
@@ -32,7 +41,7 @@ import org.jooq.impl.SchemaImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Vvv extends SchemaImpl {
 
-	private static final long serialVersionUID = -1317090463;
+	private static final long serialVersionUID = -755228859;
 
 	/**
 	 * The reference instance of <code>vvv</code>
@@ -56,8 +65,17 @@ public class Vvv extends SchemaImpl {
 	private final List<Table<?>> getTables0() {
 		return Arrays.<Table<?>>asList(
 			Address.ADDRESS,
-			CreditCard.CREDIT_CARD,
+			Carrier.CARRIER,
+			City.CITY,
+			Employee.EMPLOYEE,
+			Itinerary.ITINERARY,
+			Modal.MODAL,
 			Oauth.OAUTH,
+			Passenger.PASSENGER,
+			Reservation.RESERVATION,
+			RetailOutlet.RETAIL_OUTLET,
+			Route.ROUTE,
+			Staff.STAFF,
 			User.USER);
 	}
 }

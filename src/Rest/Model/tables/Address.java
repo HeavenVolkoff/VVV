@@ -14,7 +14,6 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import org.jooq.Field;
-import org.jooq.ForeignKey;
 import org.jooq.Identity;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -35,7 +34,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Address extends TableImpl<AddressRecord> {
 
-	private static final long serialVersionUID = -610389665;
+	private static final long serialVersionUID = 1891969691;
 
 	/**
 	 * The reference instance of <code>vvv.address</code>
@@ -54,11 +53,6 @@ public class Address extends TableImpl<AddressRecord> {
 	 * The column <code>vvv.address.id</code>.
 	 */
 	public final TableField<AddressRecord, Integer> ID = createField("id", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
-
-	/**
-	 * The column <code>vvv.address.user_id</code>.
-	 */
-	public final TableField<AddressRecord, Integer> USER_ID = createField("user_id", org.jooq.impl.SQLDataType.INTEGER, this, "");
 
 	/**
 	 * The column <code>vvv.address.street</code>.
@@ -128,15 +122,7 @@ public class Address extends TableImpl<AddressRecord> {
 	 */
 	@Override
 	public List<UniqueKey<AddressRecord>> getKeys() {
-		return Arrays.<UniqueKey<AddressRecord>>asList(Keys.KEY_ADDRESS_PRIMARY, Keys.KEY_ADDRESS_USER_ID_UNIQUE);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<ForeignKey<AddressRecord, ?>> getReferences() {
-		return Arrays.<ForeignKey<AddressRecord, ?>>asList(Keys.FK_ADDRESS_USER);
+		return Arrays.<UniqueKey<AddressRecord>>asList(Keys.KEY_ADDRESS_PRIMARY);
 	}
 
 	/**

@@ -28,10 +28,9 @@ import javax.persistence.Table;
 @Table(name = "address", schema = "vvv")
 public class Address implements Serializable {
 
-	private static final long serialVersionUID = -1702178905;
+	private static final long serialVersionUID = 805632527;
 
 	private Integer id;
-	private Integer userId;
 	private String  street;
 	private Integer number;
 	private String  city;
@@ -42,7 +41,6 @@ public class Address implements Serializable {
 
 	public Address(Address value) {
 		this.id = value.id;
-		this.userId = value.userId;
 		this.street = value.street;
 		this.number = value.number;
 		this.city = value.city;
@@ -52,7 +50,6 @@ public class Address implements Serializable {
 
 	public Address(
 		Integer id,
-		Integer userId,
 		String  street,
 		Integer number,
 		String  city,
@@ -60,7 +57,6 @@ public class Address implements Serializable {
 		String  country
 	) {
 		this.id = id;
-		this.userId = userId;
 		this.street = street;
 		this.number = number;
 		this.city = city;
@@ -76,15 +72,6 @@ public class Address implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	@Column(name = "user_id", unique = true, precision = 10)
-	public Integer getUserId() {
-		return this.userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
 	}
 
 	@Column(name = "street", nullable = false, length = 255)
@@ -137,7 +124,6 @@ public class Address implements Serializable {
 		StringBuilder sb = new StringBuilder("Address (");
 
 		sb.append(id);
-		sb.append(", ").append(userId);
 		sb.append(", ").append(street);
 		sb.append(", ").append(number);
 		sb.append(", ").append(city);

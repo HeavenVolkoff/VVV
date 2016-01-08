@@ -1,9 +1,7 @@
 package Rest.Controller;
 
 import Rest.Model.tables.daos.OauthDao;
-import Rest.Model.tables.daos.UserDao;
 import Rest.Model.tables.pojos.Oauth;
-import Rest.Model.tables.pojos.User;
 import Server.ErrorHandling.AppException;
 import Server.Utility.ResponseMessage;
 import Server.Utility.DbFactory;
@@ -11,6 +9,9 @@ import Server.Utility.FactoryException;
 import Server.Utility.ValidatorFactory;
 import org.jooq.Configuration;
 import org.mindrot.jbcrypt.BCrypt;
+
+import Rest.Model.daoExtended.UserDao;
+import Rest.Model.pojoExtended.User;
 
 import javax.validation.ConstraintViolation;
 import javax.ws.rs.*;
@@ -23,41 +24,41 @@ import java.util.*;
 
 import static java.util.concurrent.TimeUnit.*;
 
-
 @Path("user")
 public class UserController {
 
-    @POST
+    @GET
     @Path("ping")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public ResponseMessage ping(@QueryParam("userId") int userId, String token) throws AppException {
-        try(DbFactory.Db db = DbFactory.openConnection()){
-            checkIfLoggedIn(userId, token, db.getConfiguration());
+    public ResponseMessage ping(@HeaderParam("AuthToken") String token, @QueryParam("id") int userId) throws AppException {
+        try(DbFactory.Db db = DbFactory.openConnection()){ //Try with resources
+            AssertUserIsLoggedIn(userId, token, db.getConfiguration()); //This will upgrade oAuth time for us
 
             return new ResponseMessage("PONG", "It's Alive");
 
         } catch (SQLException | FactoryException e) {
-            throw new AppException(500, "DB_ERROR", e.getStackTrace(), e.getMessage());
+            throw new AppException(Response.Status.INTERNAL_SERVER_ERROR, "DB_ERROR", e.getStackTrace(), e.getMessage());
         }
     }
 
     @GET
     @Path("get")
     @Produces(MediaType.APPLICATION_JSON)
-    public ResponseMessage get(@QueryParam("id") int id) throws AppException {
+    public ResponseMessage get(@HeaderParam("AuthToken") String token, @QueryParam("id") int userId) throws AppException {
         try(DbFactory.Db db = DbFactory.openConnection()){ //Try with resources
-            UserDao userDao = new UserDao(db.getConfiguration());
-            User user = userDao.findById(id);
+            AssertUserIsLoggedIn(userId, token, db.getConfiguration());
+
+            User user = new UserDao(db.getConfiguration()).findById(userId); //Get user
 
             if(user == null){
-                throw new AppException(404, "USER_NOT_FOUND", "User Not Found");
+                throw new AppException(Response.Status.NOT_FOUND, "USER_NOT_FOUND", "User Not Found");
             }
 
-            return new ResponseMessage("FOUND_USER", user);
+            return new ResponseMessage("FOUND_USER", user); //Return User non-sensible info
 
         } catch (SQLException | FactoryException e) {
-            throw new AppException(500, "DB_ERROR", e.getStackTrace(), e.getMessage());
+            throw new AppException(Response.Status.INTERNAL_SERVER_ERROR, "DB_ERROR", e.getStackTrace(), e.getMessage());
         }
     }
 
@@ -65,36 +66,40 @@ public class UserController {
     @Path("create")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public Response create(Rest.Model.pojoExtended.User user) throws AppException {
-        HashMap<String, String> errorData = new HashMap<>();
-
+    public Response create(User user) throws AppException {
         try(DbFactory.Db db = DbFactory.openConnection()){ //Try with resources
-            Set<ConstraintViolation<User>> constraintViolations = ValidatorFactory.getValidator().validate(user);
+            HashMap<String, String> errorData = new HashMap<>(); //JSON container
+            Set<ConstraintViolation<User>> constraintViolations = ValidatorFactory.getValidator().validate(user); //Check validations errors
 
-            if(constraintViolations.size() != 0){
+            if(!constraintViolations.isEmpty()){ //If we have errors return them to user
                 ConstraintViolation validationError = constraintViolations.iterator().next();
                 errorData.put("field", validationError.getPropertyPath().toString());
                 errorData.put("error", validationError.getMessage());
 
-                throw new AppException(400, "VALIDATION_ERROR", errorData);
+                throw new AppException(Response.Status.BAD_REQUEST, "VALIDATION_ERROR", errorData);
             }
 
             UserDao userDao = new UserDao(db.getConfiguration());
-            if(userDao.fetchOneByEmail(user.getEmail()) != null){
+            if(userDao.fetchOneByEmail(user.getEmail()) != null){ //Check if we don't already have a user with the same email address
                 errorData.put("field", "email");
                 errorData.put("error", "DUPLICATE_EMAIL");
 
-                throw new AppException(400, "VALIDATION_ERROR", errorData);
+                throw new AppException(Response.Status.BAD_REQUEST, "VALIDATION_ERROR", errorData);
             }
 
-            user.setCreatedAt(new Timestamp((new Date()).getTime()));
-            user.setType((byte) 2);
-            userDao.insert(user);
+            if(!user.checkType()){ //Check if this user have a valid key to be of type employer
+                errorData.put("field", "type");
+                errorData.put("error", "INVALID_KEY");
 
-            return Response.status(202).entity(new ResponseMessage(202, "USER_CREATED", "WAITING_EMAIL_CONFIRMATION")).build();
+                throw new AppException(Response.Status.BAD_REQUEST, "VALIDATION_ERROR", errorData);
+            }
+
+            userDao.insert(user); //Insert new user on database
+
+            return ResponseMessage.build(Response.Status.ACCEPTED, "USER_CREATED", "WAITING_EMAIL_CONFIRMATION"); //Return success message
 
         } catch (SQLException | FactoryException e) {
-            throw new AppException(500, "DB_ERROR", e.getStackTrace(), e.getMessage());
+            throw new AppException(Response.Status.INTERNAL_SERVER_ERROR, "DB_ERROR", e.getStackTrace(), e.getMessage());
         }
     }
 
@@ -104,39 +109,35 @@ public class UserController {
     @Produces({MediaType.APPLICATION_JSON})
     public ResponseMessage login(HashMap<String, String> credentials) throws AppException {
         try(DbFactory.Db db = DbFactory.openConnection()) { //Try with resources
-            UserDao userDao = new UserDao(db.getConfiguration());
             String password = credentials.get("password");
             String email = credentials.get("email");
 
             if(password == null || email == null){
-                throw new AppException(400, "INVALID_CREDENTIALS", "Username or Password are Invalid");
+                throw new AppException(Response.Status.BAD_REQUEST, "INVALID_CREDENTIALS", "Username or Password are Invalid");
             }
 
-            User user = userDao.fetchOneByEmail(email);
+            User user = new UserDao(db.getConfiguration()).fetchOneByEmail(email); //Get user
 
             if(user == null){
-                throw new AppException(400, "INVALID_EMAIL", "There is no user associated with this email");
+                throw new AppException(Response.Status.BAD_REQUEST, "INVALID_EMAIL", "There is no user associated with this email");
             }
 
-            byte[] passwordHash = user.getPasswordHash();
-            String passwordHashString = new String(passwordHash, "UTF-8");
-
-            if(!(BCrypt.checkpw(password, passwordHashString))){
-                throw new AppException(401, "INVALID_CREDENTIALS", "Username or Password are Invalid");
+            if(!user.checkPassword(password)){ //Check password
+                throw new AppException(Response.Status.UNAUTHORIZED, "INVALID_CREDENTIALS", "Username or Password are Invalid");
             }
 
             byte[] token = generateOAuthToken(user, db.getConfiguration());
 
-            return new ResponseMessage("LOGGED_IN", new HashMap<String, Object>(){{
+            return new ResponseMessage("LOGGED_IN", new HashMap<String, Object>(){{ //Return oAuth token to user
                 put("token", Base64.getEncoder().encodeToString(token));
                 put("userId", user.getId());
             }});
 
         } catch (SQLException | FactoryException e) {
-            throw new AppException(500, "DB_ERROR", e.getStackTrace(), e.getMessage());
+            throw new AppException(Response.Status.INTERNAL_SERVER_ERROR, "DB_ERROR", e.getStackTrace(), e.getMessage());
 
         } catch (UnsupportedEncodingException e){
-            throw new AppException(401, "INVALID_ENCODING", "Username or Password have invalid encoding");
+            throw new AppException(Response.Status.UNAUTHORIZED, "INVALID_ENCODING", "Username or Password have invalid encoding");
         }
     }
 
@@ -177,28 +178,28 @@ public class UserController {
         return token;
     }
 
-    private void checkIfLoggedIn(int id, String token, Configuration dbConfig) throws AppException {
+    private void AssertUserIsLoggedIn(int id, String token, Configuration dbConfig) throws AppException {
         long now = (new Date()).getTime();
 
         if(token == null){
-            throw new AppException(401, "NOT_NULL", "Token is required");
+            throw new AppException(Response.Status.UNAUTHORIZED, "NOT_NULL", "Token is required");
         }
 
         OauthDao authDao = new OauthDao(dbConfig);
         Oauth auth = authDao.fetchOneByUserId(id);
 
         if(auth == null){
-            throw new AppException(401, "USER_NOT_LOGGED", "User isn't logged in");
+            throw new AppException(Response.Status.UNAUTHORIZED, "USER_NOT_LOGGED", "User isn't logged in");
         }
 
         if(!Arrays.equals(auth.getToken(), Base64.getDecoder().decode(token))){
-            throw new AppException(401, "INVALID_TOKEN", "Token is invalid");
+            throw new AppException(Response.Status.UNAUTHORIZED, "INVALID_TOKEN", "Token is invalid");
 
         } else if(now - auth.getLastLoginAt().getTime() > MILLISECONDS.convert(1, HOURS)){
-            throw new AppException(401, "EXPIRED_TOKEN", "Token is expired");
+            throw new AppException(Response.Status.UNAUTHORIZED, "EXPIRED_TOKEN", "Token is expired");
         }
 
-        auth.setLastLoginAt(new Timestamp(now)); //TODO: Change db field created_at to last_login
+        auth.setLastLoginAt(new Timestamp(now));
         authDao.update(auth);
     }
 }

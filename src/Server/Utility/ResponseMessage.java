@@ -1,6 +1,8 @@
 package Server.Utility;
 
 
+import javax.ws.rs.core.Response;
+
 public class ResponseMessage {
     private String type;
     private Integer status;
@@ -19,6 +21,21 @@ public class ResponseMessage {
         this.status = status;
         this.code = code;
         this.data = data;
+    }
+
+    public ResponseMessage(Response.Status status, String code, Object data) {
+        this.type = "MESSAGE";
+        this.status = status.getStatusCode();
+        this.code = code;
+        this.data = data;
+    }
+
+    public static Response build(Response.Status status, String code, Object data) {
+        return Response.status(status).entity(new ResponseMessage(status, code, data)).build();
+    }
+
+    public static Response build(int status, String code, Object data) {
+        return Response.status(status).entity(new ResponseMessage(status, code, data)).build();
     }
 
     public String getType() {

@@ -36,7 +36,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 @Table(name = "user", schema = "vvv")
 public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Record8<Integer, String, String, String, byte[], Timestamp, Timestamp, Byte> {
 
-	private static final long serialVersionUID = 707945509;
+	private static final long serialVersionUID = 2072849328;
 
 	/**
 	 * Setter for <code>vvv.user.id</code>.
@@ -109,7 +109,7 @@ public class UserRecord extends UpdatableRecordImpl<UserRecord> implements Recor
 	/**
 	 * Getter for <code>vvv.user.password_hash</code>.
 	 */
-	@Column(name = "password_hash", nullable = false, length = 60)
+	@Column(name = "password_hash", length = 60)
 	public byte[] getPasswordHash() {
 		return (byte[]) getValue(4);
 	}

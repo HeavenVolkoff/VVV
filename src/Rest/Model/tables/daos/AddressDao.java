@@ -65,20 +65,6 @@ public class AddressDao extends DAOImpl<AddressRecord, Rest.Model.tables.pojos.A
 	}
 
 	/**
-	 * Fetch records that have <code>user_id IN (values)</code>
-	 */
-	public List<Rest.Model.tables.pojos.Address> fetchByUserId(Integer... values) {
-		return fetch(Address.ADDRESS.USER_ID, values);
-	}
-
-	/**
-	 * Fetch a unique record that has <code>user_id = value</code>
-	 */
-	public Rest.Model.tables.pojos.Address fetchOneByUserId(Integer value) {
-		return fetchOne(Address.ADDRESS.USER_ID, value);
-	}
-
-	/**
 	 * Fetch records that have <code>street IN (values)</code>
 	 */
 	public List<Rest.Model.tables.pojos.Address> fetchByStreet(String... values) {

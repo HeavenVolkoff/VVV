@@ -34,7 +34,7 @@ import javax.validation.constraints.Size;
 @Table(name = "user", schema = "vvv")
 public class User implements Serializable {
 
-	private static final long serialVersionUID = 1919805592;
+	private static final long serialVersionUID = 650727267;
 
 	@JsonIgnore
 	private Integer   id;
@@ -132,7 +132,7 @@ public class User implements Serializable {
 		this.email = email;
 	}
 
-	@Column(name = "password_hash", nullable = false, length = 60)
+	@Column(name = "password_hash", length = 60)
 	public byte[] getPasswordHash() {
 		return this.passwordHash;
 	}

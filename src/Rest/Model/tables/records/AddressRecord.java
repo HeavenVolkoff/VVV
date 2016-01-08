@@ -14,8 +14,8 @@ import javax.persistence.Table;
 
 import org.jooq.Field;
 import org.jooq.Record1;
-import org.jooq.Record7;
-import org.jooq.Row7;
+import org.jooq.Record6;
+import org.jooq.Row6;
 import org.jooq.impl.UpdatableRecordImpl;
 
 
@@ -32,9 +32,9 @@ import org.jooq.impl.UpdatableRecordImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 @Entity
 @Table(name = "address", schema = "vvv")
-public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements Record7<Integer, Integer, String, Integer, String, String, String> {
+public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements Record6<Integer, String, Integer, String, String, String> {
 
-	private static final long serialVersionUID = -1399038716;
+	private static final long serialVersionUID = -1631511873;
 
 	/**
 	 * Setter for <code>vvv.address.id</code>.
@@ -53,25 +53,10 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	}
 
 	/**
-	 * Setter for <code>vvv.address.user_id</code>.
-	 */
-	public void setUserId(Integer value) {
-		setValue(1, value);
-	}
-
-	/**
-	 * Getter for <code>vvv.address.user_id</code>.
-	 */
-	@Column(name = "user_id", unique = true, precision = 10)
-	public Integer getUserId() {
-		return (Integer) getValue(1);
-	}
-
-	/**
 	 * Setter for <code>vvv.address.street</code>.
 	 */
 	public void setStreet(String value) {
-		setValue(2, value);
+		setValue(1, value);
 	}
 
 	/**
@@ -79,14 +64,14 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 */
 	@Column(name = "street", nullable = false, length = 255)
 	public String getStreet() {
-		return (String) getValue(2);
+		return (String) getValue(1);
 	}
 
 	/**
 	 * Setter for <code>vvv.address.number</code>.
 	 */
 	public void setNumber(Integer value) {
-		setValue(3, value);
+		setValue(2, value);
 	}
 
 	/**
@@ -94,14 +79,14 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 */
 	@Column(name = "number", precision = 10)
 	public Integer getNumber() {
-		return (Integer) getValue(3);
+		return (Integer) getValue(2);
 	}
 
 	/**
 	 * Setter for <code>vvv.address.city</code>.
 	 */
 	public void setCity(String value) {
-		setValue(4, value);
+		setValue(3, value);
 	}
 
 	/**
@@ -109,14 +94,14 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 */
 	@Column(name = "city", nullable = false, length = 255)
 	public String getCity() {
-		return (String) getValue(4);
+		return (String) getValue(3);
 	}
 
 	/**
 	 * Setter for <code>vvv.address.state</code>.
 	 */
 	public void setState(String value) {
-		setValue(5, value);
+		setValue(4, value);
 	}
 
 	/**
@@ -124,14 +109,14 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 */
 	@Column(name = "state", nullable = false, length = 255)
 	public String getState() {
-		return (String) getValue(5);
+		return (String) getValue(4);
 	}
 
 	/**
 	 * Setter for <code>vvv.address.country</code>.
 	 */
 	public void setCountry(String value) {
-		setValue(6, value);
+		setValue(5, value);
 	}
 
 	/**
@@ -139,7 +124,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 */
 	@Column(name = "country", nullable = false, length = 255)
 	public String getCountry() {
-		return (String) getValue(6);
+		return (String) getValue(5);
 	}
 
 	// -------------------------------------------------------------------------
@@ -155,23 +140,23 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	}
 
 	// -------------------------------------------------------------------------
-	// Record7 type implementation
+	// Record6 type implementation
 	// -------------------------------------------------------------------------
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row7<Integer, Integer, String, Integer, String, String, String> fieldsRow() {
-		return (Row7) super.fieldsRow();
+	public Row6<Integer, String, Integer, String, String, String> fieldsRow() {
+		return (Row6) super.fieldsRow();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Row7<Integer, Integer, String, Integer, String, String, String> valuesRow() {
-		return (Row7) super.valuesRow();
+	public Row6<Integer, String, Integer, String, String, String> valuesRow() {
+		return (Row6) super.valuesRow();
 	}
 
 	/**
@@ -186,15 +171,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<Integer> field2() {
-		return Address.ADDRESS.USER_ID;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Field<String> field3() {
+	public Field<String> field2() {
 		return Address.ADDRESS.STREET;
 	}
 
@@ -202,7 +179,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<Integer> field4() {
+	public Field<Integer> field3() {
 		return Address.ADDRESS.NUMBER;
 	}
 
@@ -210,7 +187,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<String> field5() {
+	public Field<String> field4() {
 		return Address.ADDRESS.CITY;
 	}
 
@@ -218,7 +195,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<String> field6() {
+	public Field<String> field5() {
 		return Address.ADDRESS.STATE;
 	}
 
@@ -226,7 +203,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Field<String> field7() {
+	public Field<String> field6() {
 		return Address.ADDRESS.COUNTRY;
 	}
 
@@ -242,15 +219,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Integer value2() {
-		return getUserId();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String value3() {
+	public String value2() {
 		return getStreet();
 	}
 
@@ -258,7 +227,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Integer value4() {
+	public Integer value3() {
 		return getNumber();
 	}
 
@@ -266,7 +235,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String value5() {
+	public String value4() {
 		return getCity();
 	}
 
@@ -274,7 +243,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String value6() {
+	public String value5() {
 		return getState();
 	}
 
@@ -282,7 +251,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String value7() {
+	public String value6() {
 		return getCountry();
 	}
 
@@ -299,16 +268,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public AddressRecord value2(Integer value) {
-		setUserId(value);
-		return this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public AddressRecord value3(String value) {
+	public AddressRecord value2(String value) {
 		setStreet(value);
 		return this;
 	}
@@ -317,7 +277,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public AddressRecord value4(Integer value) {
+	public AddressRecord value3(Integer value) {
 		setNumber(value);
 		return this;
 	}
@@ -326,7 +286,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public AddressRecord value5(String value) {
+	public AddressRecord value4(String value) {
 		setCity(value);
 		return this;
 	}
@@ -335,7 +295,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public AddressRecord value6(String value) {
+	public AddressRecord value5(String value) {
 		setState(value);
 		return this;
 	}
@@ -344,7 +304,7 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public AddressRecord value7(String value) {
+	public AddressRecord value6(String value) {
 		setCountry(value);
 		return this;
 	}
@@ -353,14 +313,13 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public AddressRecord values(Integer value1, Integer value2, String value3, Integer value4, String value5, String value6, String value7) {
+	public AddressRecord values(Integer value1, String value2, Integer value3, String value4, String value5, String value6) {
 		value1(value1);
 		value2(value2);
 		value3(value3);
 		value4(value4);
 		value5(value5);
 		value6(value6);
-		value7(value7);
 		return this;
 	}
 
@@ -378,15 +337,14 @@ public class AddressRecord extends UpdatableRecordImpl<AddressRecord> implements
 	/**
 	 * Create a detached, initialised AddressRecord
 	 */
-	public AddressRecord(Integer id, Integer userId, String street, Integer number, String city, String state, String country) {
+	public AddressRecord(Integer id, String street, Integer number, String city, String state, String country) {
 		super(Address.ADDRESS);
 
 		setValue(0, id);
-		setValue(1, userId);
-		setValue(2, street);
-		setValue(3, number);
-		setValue(4, city);
-		setValue(5, state);
-		setValue(6, country);
+		setValue(1, street);
+		setValue(2, number);
+		setValue(3, city);
+		setValue(4, state);
+		setValue(5, country);
 	}
 }

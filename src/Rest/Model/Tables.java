@@ -5,8 +5,17 @@ package Rest.Model;
 
 
 import Rest.Model.tables.Address;
-import Rest.Model.tables.CreditCard;
+import Rest.Model.tables.Carrier;
+import Rest.Model.tables.City;
+import Rest.Model.tables.Employee;
+import Rest.Model.tables.Itinerary;
+import Rest.Model.tables.Modal;
 import Rest.Model.tables.Oauth;
+import Rest.Model.tables.Passenger;
+import Rest.Model.tables.Reservation;
+import Rest.Model.tables.RetailOutlet;
+import Rest.Model.tables.Route;
+import Rest.Model.tables.Staff;
 import Rest.Model.tables.User;
 
 import javax.annotation.Generated;
@@ -31,14 +40,59 @@ public class Tables {
 	public static final Address ADDRESS = Rest.Model.tables.Address.ADDRESS;
 
 	/**
-	 * The table vvv.credit_card
+	 * The table vvv.carrier
 	 */
-	public static final CreditCard CREDIT_CARD = Rest.Model.tables.CreditCard.CREDIT_CARD;
+	public static final Carrier CARRIER = Rest.Model.tables.Carrier.CARRIER;
+
+	/**
+	 * The table vvv.city
+	 */
+	public static final City CITY = Rest.Model.tables.City.CITY;
+
+	/**
+	 * The table vvv.employee
+	 */
+	public static final Employee EMPLOYEE = Rest.Model.tables.Employee.EMPLOYEE;
+
+	/**
+	 * The table vvv.itinerary
+	 */
+	public static final Itinerary ITINERARY = Rest.Model.tables.Itinerary.ITINERARY;
+
+	/**
+	 * The table vvv.modal
+	 */
+	public static final Modal MODAL = Rest.Model.tables.Modal.MODAL;
 
 	/**
 	 * The table vvv.oAuth
 	 */
 	public static final Oauth OAUTH = Rest.Model.tables.Oauth.OAUTH;
+
+	/**
+	 * The table vvv.passenger
+	 */
+	public static final Passenger PASSENGER = Rest.Model.tables.Passenger.PASSENGER;
+
+	/**
+	 * The table vvv.reservation
+	 */
+	public static final Reservation RESERVATION = Rest.Model.tables.Reservation.RESERVATION;
+
+	/**
+	 * The table vvv.retail_outlet
+	 */
+	public static final RetailOutlet RETAIL_OUTLET = Rest.Model.tables.RetailOutlet.RETAIL_OUTLET;
+
+	/**
+	 * The table vvv.route
+	 */
+	public static final Route ROUTE = Rest.Model.tables.Route.ROUTE;
+
+	/**
+	 * The table vvv.staff
+	 */
+	public static final Staff STAFF = Rest.Model.tables.Staff.STAFF;
 
 	/**
 	 * The table vvv.user

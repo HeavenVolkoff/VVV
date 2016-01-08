@@ -1,6 +1,8 @@
 package Server.ErrorHandling;
 
 
+import javax.ws.rs.core.Response;
+
 public class AppException extends Exception {
 
     /**
@@ -17,6 +19,14 @@ public class AppException extends Exception {
     /** detailed error description for developers*/
     String developerMessage;
 
+    public AppException(Response.Status status, String code, Object data, String developerMessage) {
+        super(code);
+        this.status = status.getStatusCode();
+        this.code = code;
+        this.data = data;
+        this.developerMessage = developerMessage;
+    }
+
     public AppException(int status, String code, Object data, String developerMessage) {
         super(code);
         this.status = status;
@@ -28,6 +38,13 @@ public class AppException extends Exception {
     public AppException(int status, String code, Object data) {
         super(code);
         this.status = status;
+        this.code = code;
+        this.data = data;
+    }
+
+    public AppException(Response.Status status, String code, Object data) {
+        super(code);
+        this.status = status.getStatusCode();
         this.code = code;
         this.data = data;
     }
