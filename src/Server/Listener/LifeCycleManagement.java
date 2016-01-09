@@ -8,30 +8,26 @@ import org.mindrot.jbcrypt.BCrypt;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.ws.rs.ext.Provider;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Provider
 public class LifeCycleManagement implements ServletContextListener {
-    private final static Logger LOGGER;
-    static{
-        LOGGER = Logger.getLogger(LifeCycleManagement.class.getName());
-        LOGGER.setLevel(Level.CONFIG);
-    }
+    private final static Logger LOGGER = Application.getLogger(LifeCycleManagement.class.getName());
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        System.out.println("Server started...");
+        LOGGER.info("Server started...");
 
-        System.out.println("DEFAULT CSRF KEY: "      + BCrypt.hashpw(Application.CSRF_KEY,       BCrypt.gensalt(10)));
-        System.out.println("DEFAULT EMPLOYEE KEY: "  + BCrypt.hashpw(Application.EMPLOYEE_KEY,   BCrypt.gensalt(10)));
-        System.out.println("DEFAULT MANAGER KEY: "   + BCrypt.hashpw(Application.MANAGER_KEY,    BCrypt.gensalt(10)));
+        LOGGER.config("DEFAULT EMPLOYEE KEY: "  + BCrypt.hashpw(Application.EMPLOYEE_KEY,   BCrypt.gensalt(10)));
+        LOGGER.config("DEFAULT MANAGER KEY: "   + BCrypt.hashpw(Application.MANAGER_KEY,    BCrypt.gensalt(10)));
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         DbFactory.closeAllConnections();
 
-        System.out.println("Server stopped...");
+        LOGGER.info("Server stopped...");
     }
 }

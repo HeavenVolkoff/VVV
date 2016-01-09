@@ -24,7 +24,7 @@ import java.util.*;
 
 import static java.util.concurrent.TimeUnit.*;
 
-@Path("user")
+@Path("rest/user")
 public class UserController {
 
     @GET
