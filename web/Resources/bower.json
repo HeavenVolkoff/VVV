@@ -1,0 +1,24 @@
+{
+  "name": "VVV",
+  "authors": [
+    "Vitor Augusto da Silva Vasconcellos <vasvas10@gmail.com>"
+  ],
+  "description": "Sistema VVV",
+  "main": "",
+  "moduleType": [],
+  "license": "Proprietary",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "material-design-lite": "~1.0.6",
+    "axios": "~0.8.1",
+    "bluebird": "~3.1.1"
+  }
+}
