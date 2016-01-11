@@ -1,0 +1,17 @@
+######## Set-Up #########
+
+Requisitos:
+- MySQL (https://www.mysql.com/)
+- Bower (http://bower.io/) (Para instalar o bower é necessário o Node.js (https://nodejs.org/en/) e o NPM(incluso no Node))
+- IDE com suporte ao ("TomCat") ou (GlassFish") e ao gerenciador de pacotes ("Maven")
+
+O MySQL deve estar rodando a partir da porta ("3306") e ter uma tabela de nome ("vvv") seguindo o modelo/script presente na pasta ("documentation")
+
+Antes de executar o projeto é necessário ter os pacotes/bibliotecas java e javascript baixadas,
+para isso certifique-se que o Maven é suportado pela sua IDE e que todos os pacote, descritos em ("pom.xml") ja foram baixados.
+Para baixar as bibliotecas javascript é necessário executar o seguinte comando no terminal/cmd a partir da pasta ("web/Resources"),
+onde se encontra o ("bower.json"):
+
+$> bower install
+
+Após disso é so executar o projeto
